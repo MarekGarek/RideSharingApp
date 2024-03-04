@@ -21,7 +21,7 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping(path = "/student")
+    @GetMapping(path = "/users")
     public List<UserDto> listUsers() {
         List<UserEntity> userEntities = userService.findAll();
         return userEntities.stream().map(userMapper::mapTo).collect(Collectors.toList());
