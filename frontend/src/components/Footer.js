@@ -1,15 +1,12 @@
 import '../css/Footer.css';
+import NavLinks from './NavLinks.js';
 
 export default function Footer() {
     return (
         <>
         <footer className="py-3 my-4 my-footer">
-            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Prečo s nami?</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">O nás</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Cesty</a></li>
-            </ul>
+            <NavLinks/>
+            <hr class="featurette-divider"></hr>
 
             <ul class="nav justify-content-center pb-3 mb-3">
                 <a className="btn btn-outline-light btn-floating m-1 btn-primary" href="#" role="button">
@@ -26,7 +23,7 @@ export default function Footer() {
                 </a>
             </ul>
 
-            <p class="text-center text-body-secondary">© 2024 RideSharingApp</p>
+            <p class="text-center text-body-secondary header-options">© 2024 RideSharingApp</p>
         </footer>
         </>
     )

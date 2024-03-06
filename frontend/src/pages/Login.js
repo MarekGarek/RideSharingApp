@@ -1,7 +1,7 @@
 export default function Login() {
     return (
         <>
-        <h1>Login</h1>
+        <hr class="featurette-divider"></hr>
         </>
     )
 }
