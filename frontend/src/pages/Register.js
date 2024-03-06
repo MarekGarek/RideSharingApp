@@ -1,31 +1,61 @@
-import React from 'react';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-  MDBCheckbox
-}
-from 'mdb-react-ui-kit';
+import { useNavigate } from 'react-router-dom';
+import '../css/Register.css';
 
-export default function Register() {
+export default function Register() {   
+    const navigate = useNavigate();
+   
     return (
-        <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' style={{backgroundImage: 'url(https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp)'}}>
-            <div className='mask gradient-custom-3'></div>
-            <MDBCard className='m-5' style={{maxWidth: '600px'}}>
-            <MDBCardBody className='px-5'>
-                <h2 className="text-uppercase text-center mb-5">Create an account</h2>
-                <MDBInput wrapperClass='mb-4' label='Your Name' size='lg' id='form1' type='text'/>
-                <MDBInput wrapperClass='mb-4' label='Your Email' size='lg' id='form2' type='email'/>
-                <MDBInput wrapperClass='mb-4' label='Password' size='lg' id='form3' type='password'/>
-                <MDBInput wrapperClass='mb-4' label='Repeat your password' size='lg' id='form4' type='password'/>
-                <div className='d-flex flex-row justify-content-center mb-4'>
-                <MDBCheckbox name='flexCheck' id='flexCheckDefault' label='I agree all statements in Terms of service' />
+        <>
+        <body className="register-page">
+        <div className="bottom-padding">
+        <section className="vh-100 bg-image">
+        <div className="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div className="container h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+        <div className="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div className="card" style={{ borderRadius: "15px" }}>
+            <div className="card-body p-5 bg-orange">
+                <h2 className="text-uppercase text-center mb-5">Vytvor si účet</h2>
+                <form>
+                <div className="form-outline mb-2">
+                    <label className="form-label" htmlFor="form3Example1cg">Meno</label>
+                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" />
                 </div>
-                <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg'>Register</MDBBtn>
-            </MDBCardBody>
-            </MDBCard>
-        </MDBContainer>
-    )
+                <div className="form-outline mb-2">
+                    <label className="form-label" htmlFor="form3Example1cg">Priezvisko</label>
+                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" />
+                </div>
+                <div className="form-outline mb-2">
+                    <label className="form-label" htmlFor="form3Example3cg">Email</label>
+                    <input type="email" id="form3Example3cg" className="form-control form-control-lg" />
+                </div>
+                <div className="form-outline mb-2">
+                    <label className="form-label" htmlFor="form3Example3cg">Login</label>
+                    <input type="email" id="form3Example3cg" className="form-control form-control-lg" />
+                </div>
+                <div className="form-outline mb-2">
+                    <label className="form-label" htmlFor="form3Example4cg">Heslo</label>
+                    <input type="password" id="form3Example4cg" className="form-control form-control-lg" />
+                </div>
+                <div className="form-outline mb-2">
+                    <label className="form-label" htmlFor="form3Example4cdg">Zopakuj heslo</label>
+                    <input type="password" id="form3Example4cdg" className="form-control form-control-lg" />
+                </div>
+
+                <div className="d-flex justify-content-center">
+                    <button type="button" className="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                </div>
+                <p className="text-center text-muted mt-4 mb-0">Máš už vytvorený účet? <a role="button" onClick={() => navigate("/login")} className="fw-bold text-body"><u>Prihlásiť sa</u></a></p>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+        </div>
+        </body>
+        </>
+    );
 }

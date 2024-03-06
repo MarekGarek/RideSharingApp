@@ -1,0 +1,21 @@
+body.register-page {
+    background-image: url('../images/bglogin.webp');
+    background-position: bottom center;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.bottom-padding {
+    padding-bottom: 50px;
+}
+
+@media (max-width: 600px) {
+    .bottom-padding {
+        padding-bottom: 0;
+    }
+}
+
+.bg-orange {
+    background-color: #e3b433ec;
+    border-radius: 15px;
+}

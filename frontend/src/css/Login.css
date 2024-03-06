@@ -15,3 +15,8 @@ body.login-page {
 .text-white {
     text-decoration: none;
 }
+
+.padding-login {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}

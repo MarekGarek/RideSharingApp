@@ -8,12 +8,12 @@ export default function Login() {
         <> 
         <body className="login-page">
         <section className="vh-100 gradient-custom">
-            <div className="container py-5 h-100">
+            <div className="container py-5 h-100 padding-login">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                 <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div className="card text-white" style={{ borderRadius: '1rem', backgroundColor: '#e3b433ec'}}>
-                    <div className="card-body p-5 text-center">
-                        <div className="mb-md-5 mt-md-4 pb-5">
+                    <div className="card-body p-4 text-center">
+                        <div className="mb-md-5 mt-md-4 pb-2">
 
                         <h2 className="fw-bold mb-2 text-uppercase">Prihlásiť sa</h2>
                         <p className="text-black-50 mb-5 fw-bold">Zadajte svoje prihlasovacie meno a heslo!</p>
