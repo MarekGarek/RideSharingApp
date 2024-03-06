@@ -1,0 +1,17 @@
+body.login-page {
+    background-image: url('../images/bglogin.webp');
+    background-position: bottom center;
+}
+
+.login-btn {
+    --bs-btn-active-bg: rgba(250, 222, 11, 0.808) !important;
+    --bs-btn-hover-bg: rgba(250, 222, 11, 0.808) !important;
+}
+
+.login-btn:hover {
+    color: white !important;
+}
+
+.text-white {
+    text-decoration: none;
+}

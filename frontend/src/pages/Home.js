@@ -8,6 +8,7 @@ import handshake from '../images/handshake.webp';
 export default function Home() {
     return (
         <>
+        <br/>
         <div className="home-page-main-picture" >
             <p className="home-page-slogan">
                  <span className="slogan">Zdieľanou jazdou k šetrnosti , udržateľnosti a bezpečnosti.</span>
@@ -44,7 +45,7 @@ export default function Home() {
         text2="Cestovanie s nami poskytuje viac ako len prepravu z bodu A
         do bodu B. Je to príležitosť stretnúť zaujímavých ľudí a nadviazať nové priateľstvá."
         pic2={handshake}/>
-
+        
         </>
     )
 }
