@@ -2,7 +2,7 @@ body.register-page {
     background-image: url('../images/bglogin.webp');
     background-position: bottom center;
     padding-top: 10px;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
 }
 
 .bottom-padding {
@@ -18,4 +18,16 @@ body.register-page {
 .bg-orange {
     background-color: #e3b433ec;
     border-radius: 15px;
+}
+
+.white{
+    color: white !important;
+}
+
+.radius-register {
+    border-radius: 15px;
+}
+
+.main-content {
+    display: grid;
 }

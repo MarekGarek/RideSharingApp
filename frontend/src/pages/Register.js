@@ -13,9 +13,9 @@ export default function Register() {
         <div className="container h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
         <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-            <div className="card" style={{ borderRadius: "15px" }}>
+            <div className="card radius-register">
             <div className="card-body p-5 bg-orange">
-                <h2 className="text-uppercase text-center mb-5">Vytvor si účet</h2>
+                <h2 className="text-uppercase text-center mb-5 fw-bold white">Vytvor si účet</h2>
                 <form>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example1cg">Meno</label>
@@ -41,11 +41,12 @@ export default function Register() {
                     <label className="form-label" htmlFor="form3Example4cdg">Zopakuj heslo</label>
                     <input type="password" id="form3Example4cdg" className="form-control form-control-lg" />
                 </div>
-
+                <br/>
                 <div className="d-flex justify-content-center">
-                    <button type="button" className="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                    <button type="button" className="btn btn-outline-light btn-floating px-5 login-btn">Register</button>
                 </div>
-                <p className="text-center text-muted mt-4 mb-0">Máš už vytvorený účet? <a role="button" onClick={() => navigate("/login")} className="fw-bold text-body"><u>Prihlásiť sa</u></a></p>
+                <p className="text-center text-muted mt-4 mb-0 white">Máš už vytvorený účet ? <a role="button" onClick={() => navigate("/login")} className="fw-bold text-black-50"><u>Prihlásiť sa</u></a></p>
+                
                 </form>
             </div>
             </div>

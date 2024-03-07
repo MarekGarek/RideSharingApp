@@ -1,0 +1,25 @@
+.grid-container-profile {
+    display: grid;
+    grid-template-areas:
+      'grid-container-profile-sidebar grid-container-profile-page';
+    gap: 10px;
+  }
+  
+  .grid-container-profile-page {
+    font-size: 18px;
+  }
+
+@media (max-width: 768px) {
+    .grid-container-profile {
+        display: grid;
+        grid-template-areas:
+          'grid-container-profile-sidebar'
+           'grid-container-profile-page';   
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .grid-container-profile-page {
+        font-size: 18px;
+      }
+}

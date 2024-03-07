@@ -13,6 +13,7 @@ function DropdownMenu() {
       <Dropdown.Menu>
         <Dropdown.Item type="button" onClick={() => navigate("/login")}> Prihlásiť </Dropdown.Item>
         <Dropdown.Item type="button" onClick={() => navigate("/register")}> Registrovať </Dropdown.Item>
+        <Dropdown.Item type="button" onClick={() => navigate("/profile")}> Môj profil </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
