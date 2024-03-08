@@ -1,6 +1,7 @@
 import '../css/MyProfile.css';
-import img from '../images/logo.webp';
+import img from '../images/man.png';
 import React, { useState } from 'react';
+import PassChange from '../components/PassChange';
 
 export default function MyProfile() {
     const [editMode, setEditMode] = useState(false);
@@ -68,34 +69,7 @@ export default function MyProfile() {
             </div>
         </div>
 
-        {editMode ? (<></>) : (<>
-
-        <br></br>
-        <hr class="featurette-divider"></hr>
-        <br></br>
-        <h3>Zmeniť heslo</h3>
-        <div>
-            <div>
-                <p className="my-profile-label">Staré</p>
-                <input type="password"></input>
-            </div>
-
-            <div>
-                <p className="my-profile-label">Nové</p>
-                <input type="password"></input>
-                
-            </div>
-            <div>
-                <p className="my-profile-label">Zopakuj</p>
-                <input type="password"></input>
-            </div>
-            <br></br>
-            <div>
-            <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Zmeniť</button>
-            </div>
-        </div>
-        
-        </>)}
+        {editMode ? '' : <PassChange/>}
         </>
     );
 }
