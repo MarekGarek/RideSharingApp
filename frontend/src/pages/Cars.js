@@ -13,8 +13,7 @@ export default function Cars() {
                 <h1>Moje autá </h1>
             </div>
             <div className="grid-my-profile-heading-btn"> 
-                <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
-                        
+                <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" 
                     >Nové auto</button>
             </div>
         </div>

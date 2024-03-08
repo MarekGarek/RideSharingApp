@@ -1,0 +1,77 @@
+.grid-cars-photo {grid-area: grid-cars-photo;}
+.grid-cars-idcar {grid-area: grid-cars-idcar;}
+.grid-cars-model {grid-area: grid-cars-model;}
+.grid-cars-year {grid-area: grid-cars-year;}
+.grid-cars-seats {grid-area: grid-cars-seats;}
+.grid-cars-capacity {grid-area: grid-cars-capacity;}
+.grid-cars-stk {grid-area: grid-cars-stk;}
+.grid-cars-edit {grid-area: grid-cars-edit;}
+
+.grid-cars {
+    display: grid;
+    grid-template-areas: 
+    'grid-cars-photo grid-cars-idcar grid-cars-model grid-cars-year'
+    'grid-cars-photo grid-cars-seats grid-cars-capacity grid-cars-stk'
+    'grid-cars-edit grid-cars-seats grid-cars-capacity grid-cars-stk';
+    gap: 10px;
+}
+
+.grid-cars-photo {
+    margin-right: 40px;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+
+}
+
+.grid-cars-edit {
+    text-align: center;
+    width: 200px;
+}
+
+@media (max-width: 1250px) {
+    .grid-cars {
+        grid-template-areas: 
+        'grid-cars-photo grid-cars-idcar grid-cars-model '
+        'grid-cars-photo grid-cars-year grid-cars-seats'
+        'grid-cars-edit grid-cars-capacity grid-cars-stk';
+    }
+
+    .grid-cars-photo {
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .grid-cars {
+        grid-template-areas: 
+        'grid-cars-photo grid-cars-photo'
+        'grid-cars-edit grid-cars-edit'
+        'grid-cars-idcar grid-cars-model'
+        'grid-cars-year grid-cars-seats'
+        'grid-cars-capacity grid-cars-stk';
+    }
+
+    .grid-cars-photo {
+        all: unset;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-cars {
+        grid-template-areas: 
+        'grid-cars-photo'
+        'grid-cars-edit'
+        'grid-cars-idcar'
+        'grid-cars-model'
+        'grid-cars-year'
+        'grid-cars-seats'
+        'grid-cars-capacity'
+        'grid-cars-stk';
+        text-align: center;
+    }
+    
+.grid-cars-edit {
+    width: 100%;
+}
+}

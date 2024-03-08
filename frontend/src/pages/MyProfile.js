@@ -21,21 +21,22 @@ export default function MyProfile() {
                         onClick={toggleEditMode}>{editMode ? 'Uložiť' : 'Upraviť'}</button>
             </div>
         </div>
-       
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <br/>
 
         <div className="grid-my-profile">
             <div className="grid-my-profile-photo">
                 <img src={img} className="user-photo"/>
-                <br/>
-                {editMode ? (
+            </div>
+            <div className="grid-my-profile-edit">
+            {editMode ? (
                 <>
                 <label htmlFor="file-upload" className="custom-file-upload">
                     <i className="bi bi-upload"></i>
                 </label>
                 <input id="file-upload" type="file" style={{display: 'none'}} />
                 </>
-                ) : (<></>)}
+                ) : (<></>)}   
             </div>
 
             <div className="grid-my-profile-name">

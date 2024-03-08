@@ -4,6 +4,7 @@
 .grid-my-profile-age {grid-area: grid-my-profile-age;}
 .grid-my-profile-rating {grid-area: grid-my-profile-rating;}
 .grid-my-profile-about {grid-area: grid-my-profile-about;}
+.grid-my-profile-edit {grid-area: grid-my-profile-edit;}
 
 .grid-my-profile-heading-h1 {grid-area: grid-my-profile-heading-h1;}
 .grid-my-profile-heading-btn {grid-area: grid-my-profile-heading-btn;}
@@ -31,7 +32,7 @@
     grid-template-areas: 
     'grid-my-profile-photo grid-my-profile-name grid-my-profile-surname grid-my-profile-age'
     'grid-my-profile-photo grid-my-profile-rating grid-my-profile-rating grid-my-profile-rating'
-    'grid-my-profile-photo grid-my-profile-about grid-my-profile-about grid-my-profile-about';
+    'grid-my-profile-edit grid-my-profile-about grid-my-profile-about grid-my-profile-about';
     gap: 10px;
 }
 
@@ -73,12 +74,17 @@
     border-radius: 10px;
 }
 
+.grid-my-profile-edit {
+    text-align: center;
+    width: 200px;
+}
+
 @media (max-width: 1250px) {
     .grid-my-profile {
         grid-template-areas: 
         'grid-my-profile-photo grid-my-profile-name grid-my-profile-surname '
         'grid-my-profile-photo grid-my-profile-age grid-my-profile-rating'
-        'grid-my-profile-photo grid-my-profile-about grid-my-profile-about ';
+        'grid-my-profile-edit grid-my-profile-about grid-my-profile-about ';
     }
     .grid-my-profile-photo {
         margin-right: 20px;
@@ -89,10 +95,10 @@
     .grid-my-profile {
         grid-template-areas: 
         'grid-my-profile-photo grid-my-profile-photo'
+        'grid-my-profile-edit grid-my-profile-edit'
         'grid-my-profile-name grid-my-profile-surname'
         'grid-my-profile-age grid-my-profile-rating'
         'grid-my-profile-about grid-my-profile-about ';
-        text-align: center;
     }
 
     .my-profile-about {
@@ -100,7 +106,7 @@
         width: 380px;
     }
     .grid-my-profile-photo {
-        margin-right: 20px;
+        all: unset;
     }
 
     .grid-my-profile-heading-h1 {
@@ -112,6 +118,7 @@
     .grid-my-profile {
         grid-template-areas: 
         'grid-my-profile-photo'
+        'grid-my-profile-edit'
         'grid-my-profile-name'
         'grid-my-profile-surname'
         'grid-my-profile-age'
@@ -127,5 +134,9 @@
 
     .text-area-width {
         width: 300px !important;
+    }
+
+    .grid-my-profile-edit {
+        margin-left: 50px;
     }
 }

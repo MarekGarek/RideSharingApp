@@ -7,12 +7,9 @@
 
 .grid-container-profile-sidebar {
   font-size: 18px;
-  grid-area: grid-container-profile-sidebar;
-}
+  grid-area: grid-container-profile-sidebar;}
 
-.grid-container-profile-page {
-  grid-area: grid-container-profile-page;
-}
+.grid-container-profile-page {grid-area: grid-container-profile-page;}
 
 @media (min-width: 768px) {
   .grid-container-profile {

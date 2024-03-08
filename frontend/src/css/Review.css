@@ -1,0 +1,116 @@
+.review { grid-area: review; }
+.editik { grid-area: editik; }
+.header { grid-area: header; }
+.comment { grid-area: comment; }
+.bool { grid-area: bool; }
+.user { grid-area: user; }
+.date { grid-area: date; }
+
+.h3div{
+    width: 960px;
+    margin: 0 auto;
+}
+
+.custom-divider {
+    border-width: 4px;
+    width: 80%;
+}
+
+.grid-reviews {
+    width: 80%;
+    display: grid;
+    grid-template-areas:
+      'review review review review editik '
+      'header header header header header '
+      'comment comment comment comment comment '
+      'comment comment comment comment comment '
+      'bool bool user user date ';
+    padding: 5px;
+    border-radius: 10px;
+  }
+  
+.grid-reviews > div {
+   background-color: white;
+   padding: 2px 15px 2px 15px;
+}
+
+.header {
+    font-weight: bold;
+}
+
+.header, .comment, .review, .bool {
+    margin-left: 15px;
+    padding-left: 15px !important;
+}
+
+.comment {
+    padding: 10px 15px 10px 15px !important;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.review {
+    border-top-left-radius: 10px;
+}
+
+.user {
+    padding-right: 20px !important;
+    text-align: right;
+}
+
+.bool {
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.bool,.user,.date {
+    color: white !important;
+    background-color: #e3b433ec !important;
+}
+
+.greenBG {
+    background-color: #e3b433ec !important;
+}
+
+.redBG {
+    background-color: rgb(181, 112, 112) !important;
+    color: inherit;
+}
+
+.edit-review,.delete-review {
+    all: unset !important;
+    cursor: pointer !important;
+}
+
+.editik {
+    text-align: right;
+    padding-right: 10px !important;
+    border-top-right-radius: 10px;
+}   
+
+@media (max-width: 1000px) {
+    .grid-reviews {
+        grid-template-areas:
+      'review review review review editik '
+      'header header header header header '
+      'comment comment comment comment comment '
+      'comment comment comment comment comment '
+      'user user user date date '
+      'bool bool bool bool bool ';
+      width: 100%;
+    }
+
+    .date {
+        text-align: right;
+    }
+
+    .custom-divider {
+        width: 100%;
+    }
+
+    .user {
+        text-align: left;
+    }
+}

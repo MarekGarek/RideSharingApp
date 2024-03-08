@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/Cars.css';
 
 export default function CarComponent({idcar, model, year, seats, capacity, stk, img, edit}) {
     console.log(edit);
@@ -26,19 +27,20 @@ export default function CarComponent({idcar, model, year, seats, capacity, stk, 
         <br/>
 
 
-        <div className="grid-my-profile">
-            <div className="grid-my-profile-photo">
+        <div className="grid-cars">
+            <div className="grid-cars-photo">
                 <img src={img} className="user-photo"/>
-                <br/>
-                {editMode ? (
+            </div>
+
+            <div className="grid-cars-edit">
+            {editMode ? (
                 <>
                 <label htmlFor="file-upload" className="custom-file-upload">
                     <i className="bi bi-upload"></i>
-                    
                 </label>
                 <input id="file-upload" type="file" style={{display: 'none'}} />
                 </>
-                ) : (<></>)}
+                ) : (<></>)}   
             </div>
 
             <div className="grid-cars-idcar">
@@ -61,7 +63,7 @@ export default function CarComponent({idcar, model, year, seats, capacity, stk, 
                 {editMode ? (<input type="number"></input>) : (<><p>{seats}</p><hr class="featurette-divider"></hr></>)}
             </div>
 
-            <div className="grid-my-profile-capacity">
+            <div className="grid-cars-capacity">
                 <p className="my-profile-label">Batožinový priestor</p>
                 {editMode ? (<input type="number"></input>) : (<><p>{capacity} l</p><hr class="featurette-divider"></hr></>)}
                 
