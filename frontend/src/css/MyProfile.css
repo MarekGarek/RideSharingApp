@@ -1,6 +1,129 @@
+.grid-my-profile-photo {grid-area: grid-my-profile-photo;}
+.grid-my-profile-name {grid-area: grid-my-profile-name;}
+.grid-my-profile-surname {grid-area: grid-my-profile-surname;}
+.grid-my-profile-age {grid-area: grid-my-profile-age;}
+.grid-my-profile-rating {grid-area: grid-my-profile-rating;}
+.grid-my-profile-about {grid-area: grid-my-profile-about;}
+
+.grid-my-profile-heading-h1 {grid-area: grid-my-profile-heading-h1;}
+.grid-my-profile-heading-btn {grid-area: grid-my-profile-heading-btn;}
+
+.grid-my-profile-heading {
+    display: grid;
+    grid-template-areas: 
+    'grid-my-profile-heading-h1 grid-my-profile-heading-btn';
+    gap: 10px;
+}
+
+.grid-my-profile-heading-h1 {
+    margin-left: 5px;
+}
+
+.grid-my-profile-heading-btn {
+    padding-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.grid-my-profile {
+    display: grid;
+    grid-template-areas: 
+    'grid-my-profile-photo grid-my-profile-name grid-my-profile-surname grid-my-profile-age'
+    'grid-my-profile-photo grid-my-profile-rating grid-my-profile-rating grid-my-profile-rating'
+    'grid-my-profile-photo grid-my-profile-about grid-my-profile-about grid-my-profile-about';
+    gap: 10px;
+}
+
+.grid-my-profile-photo {
+    margin-right: 40px;
+    text-align: center;
+
+}
+
+.my-profile-label {
+    font-weight: bold;
+}
+
+.grid-my-profile-about {
+    width: 85%;
+}
+
+.my-profile-about {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    height: auto;
+}
+
 .custom-file-upload {
+    margin-top: 2px;
     border: 1px solid #ccc;
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
+    align-content: center;
+}
+
+.user-photo {
+    width: 200px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+@media (max-width: 1250px) {
+    .grid-my-profile {
+        grid-template-areas: 
+        'grid-my-profile-photo grid-my-profile-name grid-my-profile-surname '
+        'grid-my-profile-photo grid-my-profile-age grid-my-profile-rating'
+        'grid-my-profile-photo grid-my-profile-about grid-my-profile-about ';
+    }
+    .grid-my-profile-photo {
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .grid-my-profile {
+        grid-template-areas: 
+        'grid-my-profile-photo grid-my-profile-photo'
+        'grid-my-profile-name grid-my-profile-surname'
+        'grid-my-profile-age grid-my-profile-rating'
+        'grid-my-profile-about grid-my-profile-about ';
+        text-align: center;
+    }
+
+    .my-profile-about {
+        text-align: left;
+        width: 380px;
+    }
+    .grid-my-profile-photo {
+        margin-right: 20px;
+    }
+
+    .grid-my-profile-heading-h1 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-my-profile {
+        grid-template-areas: 
+        'grid-my-profile-photo'
+        'grid-my-profile-name'
+        'grid-my-profile-surname'
+        'grid-my-profile-age'
+        ' grid-my-profile-rating'
+        'grid-my-profile-about';
+        text-align: center;
+    }
+
+    .my-profile-about {
+        text-align: left;
+        width: 300px;
+    }
+
+    .text-area-width {
+        width: 300px !important;
+    }
 }
