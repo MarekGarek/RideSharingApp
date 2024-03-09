@@ -97,8 +97,8 @@
       'header header header header header '
       'comment comment comment comment comment '
       'comment comment comment comment comment '
-      'user user user date date '
-      'bool bool bool bool bool ';
+      'bool bool bool date date '
+      'user user user user user ';
       width: 100%;
     }
 
@@ -112,5 +112,23 @@
 
     .user {
         text-align: left;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-reviews {
+        grid-template-areas:
+      'review review review review editik '
+      'header header header header header '
+      'comment comment comment comment comment '
+      'comment comment comment comment comment '
+      'bool bool bool bool bool '
+      'user user user user user '
+      'date date date date date ';
+      width: 100%;
+    }
+
+    .date {
+        text-align: center;
     }
 }

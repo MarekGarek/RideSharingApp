@@ -11,6 +11,7 @@ import WrittenReviews from '../pages/WrittenReviews';
 import ReviewsAboutMe from '../pages/ReviewsAboutMe';
 import Chats from '../pages/Chats';
 import RideHistory from '../pages/RideHistory';
+import EditReview from '../pages/EditReview';
 import '../css/Main.css'
 
 export default function Router() {
@@ -44,6 +45,7 @@ export default function Router() {
                             <Route path="cars" element={<Cars />} />
                             <Route path="written-reviews" element={<WrittenReviews />} />
                             <Route path="reviews-about-me" element={<ReviewsAboutMe />} />
+                            <Route path="edit-review" element={<EditReview />} />
                             <Route path="chats" element={<Chats />} />
                             <Route path="ride-history" element={<RideHistory />} />
                         </Route>    

@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import '../css/Review.css';
 
 export default function Review({date,user,title,text,idreviews,recommendation,stars,rev}) {
+    const navigate = useNavigate();
 
     let background = "";
     if (recommendation == 1) {
@@ -43,7 +45,7 @@ export default function Review({date,user,title,text,idreviews,recommendation,st
             <div className="editik">
             {rev == "Recenzent: " ? (
             <>
-                <button className="edit-review"> 
+                <button className="edit-review" onClick={() => {navigate("/profile/edit-review")}}> 
                     <i class="bi bi-pen"></i> 
                 </button>
                 &nbsp;&nbsp;&nbsp;
