@@ -12,6 +12,8 @@ import ReviewsAboutMe from '../pages/ReviewsAboutMe';
 import Chats from '../pages/Chats';
 import RideHistory from '../pages/RideHistory';
 import EditReview from '../pages/EditReview';
+import Trips from '../pages/Trips';
+import MoreInfo from '../pages/MoreInfo';
 import '../css/Main.css'
 
 export default function Router() {
@@ -48,7 +50,9 @@ export default function Router() {
                             <Route path="edit-review" element={<EditReview />} />
                             <Route path="chats" element={<Chats />} />
                             <Route path="ride-history" element={<RideHistory />} />
-                        </Route>    
+                        </Route>
+                        <Route path="trips" element={<Trips />} />
+                        <Route path="more-info" element={<MoreInfo />} />    
                     </Route>
                 </Routes>
             </BrowserRouter>

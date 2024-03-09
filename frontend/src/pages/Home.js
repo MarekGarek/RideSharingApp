@@ -4,8 +4,11 @@ import safe from '../images/safe.webp';
 import fast from '../images/fast.webp';
 import late from '../images/late.webp';
 import handshake from '../images/handshake.webp';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+    const navigate = useNavigate();
+
     return (
         <>
         <br/>
@@ -16,7 +19,7 @@ export default function Home() {
         </div>
         <div>
             <br></br>
-            <p role="button" className="home-page-slogan">
+            <p role="button" onClick={() => {navigate("/trips")}} className="home-page-slogan">
                  <span className="slogan">Nájdi cestu tu !</span>
             </p>
         </div>

@@ -16,6 +16,9 @@
 }
 
 .btn-primary {
+    background-color: #e3b433ec;
+    color: white !important;
+    border-color: gray;
     --bs-btn-color: #fff;
     --bs-btn-border-color: #000000;
     --bs-btn-hover-color: #fff;
@@ -77,7 +80,6 @@
 
     .nav-link {
         text-align: center;
-        width: 100%;
         padding-top: 15px;
     }
 

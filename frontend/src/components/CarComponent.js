@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/Cars.css';
 
-export default function CarComponent({idcar, model, year, seats, capacity, stk, img, edit}) {
+export default function CarComponent({idcar, model, year, seats, capacity, stk, img, edit, hide}) {
     console.log(edit);
     const [editMode, setEditMode] = useState(edit);
 
@@ -10,6 +10,8 @@ export default function CarComponent({idcar, model, year, seats, capacity, stk, 
     };
     
     return(
+        <>
+        {!hide ? (
         <>
         <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <br/>
@@ -24,6 +26,8 @@ export default function CarComponent({idcar, model, year, seats, capacity, stk, 
                         >Zmazať</button>
             </div>
         </div>
+        </>) : ''}
+
         <br/>
 
 

@@ -79,6 +79,10 @@
     width: 200px;
 }
 
+.history-trip-center {
+    margin-right: 1000px;
+}
+
 @media (max-width: 1250px) {
     .grid-my-profile {
         grid-template-areas: 
@@ -88,6 +92,10 @@
     }
     .grid-my-profile-photo {
         margin-right: 20px;
+    }
+
+    .history-trip-center {
+        margin-right: 0px;
     }
 }
 

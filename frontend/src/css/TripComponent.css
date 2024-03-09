@@ -1,0 +1,91 @@
+.grid-tripc-author {grid-area: grid-tripc-author;}
+.grid-tripc-date {grid-area: grid-tripc-date;}
+.grid-tripc-towns {grid-area: grid-tripc-towns;}
+.grid-tripc-car {grid-area: grid-tripc-car;}
+.grid-tripc-capacity {grid-area: grid-tripc-capacity;}
+.grid-tripc-price {grid-area: grid-tripc-price;}
+.grid-tripc-log {grid-area: grid-tripc-log;}
+.grid-tripc-more {grid-area: grid-tripc-more;}
+.grid-tripc-info {grid-area: grid-tripc-info;}
+
+.grid-towns-A { grid-area: grid-towns-A; width: 250px;}
+.grid-towns-B { grid-area: grid-towns-B; width: 250px;}
+
+.grid-towns {
+  display: grid;
+  grid-template-areas: 'grid-towns-A grid-towns-B';
+}
+
+
+.grid-tripc {
+    border: 1px solid #ccc;
+    margin-bottom: 10px !important;
+    border-radius: 20px;
+    width: 740px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas: 
+    'grid-tripc-author grid-tripc-car'
+    'grid-tripc-date grid-tripc-capacity'
+    'grid-tripc-towns grid-tripc-price'
+    'grid-tripc-info grid-tripc-log'
+    'grid-tripc-info grid-tripc-more';
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+a {all: unset;}
+
+.label-trpc {
+    font-weight: bold;
+    font-size: 15px;
+    color: gray;
+    font-family: cursive;
+}
+
+.dropdown-item {
+    width: auto !important;
+}
+
+.label-time {
+    font-size: 14px;
+}
+
+.label-var{
+    font-weight: bold;
+    font-family: cursive;
+    font-size: 20px;
+}
+
+.p-info-trip {
+    width: 500px;
+    font-family: 'cursive';
+    padding-right: 100px;
+    font-weight: 400;
+}
+
+@media (max-width: 1200px) {
+    .grid-tripc {
+        margin: 50px;
+        width: auto;
+        grid-template-areas: 
+        'grid-tripc-author grid-tripc-car'
+        'grid-tripc-date grid-tripc-capacity'
+        'grid-tripc-towns grid-tripc-towns'
+        'grid-tripc-info grid-tripc-info'
+        'grid-tripc-price grid-tripc-log'
+        'grid-tripc-more grid-tripc-more';
+    }
+
+    .p-info-trip {
+        width: auto;
+        padding-right: 0px;
+    }
+
+    .grid-towns-A { width: auto;}
+    .grid-towns-B { width: auto;}
+
+    .featurette-divider.media-q {
+        display: none;
+    }
+}
