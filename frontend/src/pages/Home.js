@@ -25,6 +25,7 @@ export default function Home() {
         </div>
         
         <hr class="featurette-divider"></hr>
+        <section id="homesection">
         <HomeCard
         header1="Bezpečnosť a jednoduchosť"
         text1="V súčasnom svete cestovania, kde bezpečnosť a jednoduchosť sú na prvom mieste, ponúkame riešenie,
@@ -48,7 +49,7 @@ export default function Home() {
         text2="Cestovanie s nami poskytuje viac ako len prepravu z bodu A
         do bodu B. Je to príležitosť stretnúť zaujímavých ľudí a nadviazať nové priateľstvá."
         pic2={handshake}/>
-        
+        </section>
         </>
     )
 }

@@ -49,6 +49,7 @@ a {all: unset;}
 
 .label-time {
     font-size: 14px;
+    font-family: cursive;
 }
 
 .label-var{

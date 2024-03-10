@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <>
         <footer className="py-3 my-4 my-footer">
-            <h5 style={{textAlign: 'center'}}>Naše sociálne siete:</h5>
+            <h5 style={{textAlign: 'center',fontFamily: 'cursive'}}>Naše sociálne siete:</h5>
 
             <ul class="nav justify-content-center pb-3 mb-3">
                 <a className="btn btn-outline-light btn-floating m-1 btn-primary" href="#!" role="button">

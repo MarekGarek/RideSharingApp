@@ -4,6 +4,7 @@ import '../css/Cars.css';
 export default function CarComponent({idcar, model, year, seats, capacity, stk, img, edit, hide}) {
     console.log(edit);
     const [editMode, setEditMode] = useState(edit);
+    const widthClass = !hide ? "" : "special-width";
 
     const toggleEditMode = () => {
         setEditMode(!editMode);
@@ -31,7 +32,7 @@ export default function CarComponent({idcar, model, year, seats, capacity, stk, 
         <br/>
 
 
-        <div className="grid-cars">
+        <div className={`grid-cars ${widthClass}`}>
             <div className="grid-cars-photo">
                 <img src={img} className="user-photo"/>
             </div>

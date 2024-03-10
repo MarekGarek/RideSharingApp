@@ -16,6 +16,10 @@
     gap: 10px;
 }
 
+.special-width {
+    width: 1000px;
+}
+
 .grid-cars-photo {
     margin-right: 40px;
     text-align: center;
@@ -50,6 +54,10 @@
         'grid-cars-idcar grid-cars-model'
         'grid-cars-year grid-cars-seats'
         'grid-cars-capacity grid-cars-stk';
+    }
+
+    .special-width {
+        width: auto !important;
     }
 
     .grid-cars-photo {

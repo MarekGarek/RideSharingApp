@@ -50,6 +50,12 @@ export default function Sidebar() {
             História jázd
           </a>
         </li>
+        <li>
+          <a type="button" onClick={() => navigate("/profile/create-ride")} className={`nav-link ${isActive('/profile/create-ride') ? 'active' : ''}`}>
+            <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#grid"></use></svg>
+            Vytvoriť novú jazdu
+          </a>
+        </li>
 
       </ul>
       <hr />
