@@ -1,3 +1,5 @@
+import '../css/CreateRide.css';
+
 export default function CreateRide() {
     return(
         <>
@@ -30,7 +32,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Dátum cesty: </a> 
                     </div>
                     <div>
-                        <input type='date' style={{width: '150px'}}></input>
+                        <input type='date' className="long-inputs"></input>
                     </div>
                 </p>
             </div>
@@ -43,12 +45,12 @@ export default function CreateRide() {
                     </div>
                     <div className="grid-towns">
                         <div className="grid-towns-A">
-                            <input type="text" style={{width: '150px'}}></input>
-                            <input type="time" style={{width: '70'}}></input>
+                            <input type="text" className="long-inputs"></input>
+                            <input type="time" className="time-inputs"></input>
                         </div>
                         <div className="grid-towns-B">
-                            <input type="text" style={{width: '150px'}}></input>
-                            <input type="time" style={{width: '70'}}></input>
+                            <input type="text" className="long-inputs"></input>
+                            <input type="time" className="time-inputs"></input>
                         </div>
                     </div>
                 </p>
@@ -57,7 +59,7 @@ export default function CreateRide() {
 
             <div className="grid-tripc-info">
                 <a className="label-trpc">Dodatočné info: </a><br/>
-                <textarea id="text" name="text" rows="4" cols="60" placeholder="Zadejte text..."></textarea>
+                <textarea id="text" name="text" rows="4" cols="60" placeholder="Zadejte text..." className="textarea-input"></textarea>
             </div>
 
             <div className="grid-tripc-car">
@@ -66,7 +68,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Auto: </a> 
                     </div>
                     <div>
-                        <select style={{width: '150px',height: '30px'}}>
+                        <select className="long-inputs">
                             <option>Mazda 3</option>
                             <option>Peugeot 207</option>
                         </select>
@@ -81,7 +83,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Voľné miesta: </a>
                     </div>
                     <div>
-                        <input type='number'style={{width: '150px'}}></input>  
+                        <input type='number'className="long-inputs"></input>  
                     </div>
                 </p>
             </div>
@@ -92,7 +94,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Voľná kapacita: </a>
                     </div>
                     <div>
-                        <input type='number'style={{width: '150px'}}></input>  
+                        <input type='number'className="long-inputs"></input>  
                     </div>
                 </p>
                 <hr class="featurette-divider media-q"></hr>
@@ -103,7 +105,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Cena: €</a> 
                     </div>
                     <div>
-                        <input type='number'style={{width: '150px'}} step="0.2"></input>
+                        <input type='number' className="long-inputs" step="0.2"></input>
                     </div>
             </div>
 

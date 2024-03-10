@@ -1,0 +1,29 @@
+.long-inputs{
+    width: 150px;
+    height: 30px;
+}
+
+.time-inputs {
+    margin-left: 2px;
+    padding-top: 1px;
+    height: 30px;
+    width: 70px;
+}
+
+.textarea-input{
+    width: 450px;
+}
+
+@media (max-width: 1000px) {
+    .long-inputs{
+        width: 115px;
+    }
+    .time-inputs {
+        margin-top: 7px;
+        width: 115px;
+    }
+    
+    .textarea-input{
+        width: 250px;
+    }
+}
