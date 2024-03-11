@@ -90,3 +90,9 @@ a {all: unset;}
         display: none;
     }
 }
+
+@media (max-width: 1200px) {
+    .grid-tripc {
+        margin: 4px;
+    }
+}

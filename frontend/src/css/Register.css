@@ -13,6 +13,10 @@ body.register-page {
     .bottom-padding {
         padding-bottom: 0;
     }
+
+    body.register-page {
+        height: 130vh;
+    }
 }
 
 .bg-orange {

@@ -122,13 +122,20 @@
       'header header header header header '
       'comment comment comment comment comment '
       'comment comment comment comment comment '
-      'bool bool bool bool bool '
-      'user user user user user '
-      'date date date date date ';
+      'bool bool bool date date '
+      'user user user user user ';
       width: 100%;
+    }
+
+    .user {
+        text-align: center;
     }
 
     .date {
         text-align: center;
     }
+
+    .grid-reviews > div {
+        padding: 0px;
+     }
 }

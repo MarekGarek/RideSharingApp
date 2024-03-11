@@ -41,6 +41,7 @@ export default function Router() {
                     <Route path="/" element={<Layout/>}>
                         <Route path="home" element={<Home />} />
                         <Route path="/" element={<Home />} />
+                        <Route path="chats" element={<Chats />} />
                         <Route path="login" element={<Login />} />
                         <Route path="register" element={<Register />} />
                         <Route path="profile" element={<Profile />}>
@@ -49,7 +50,6 @@ export default function Router() {
                             <Route path="written-reviews" element={<WrittenReviews />} />
                             <Route path="reviews-about-me" element={<ReviewsAboutMe />} />
                             <Route path="edit-review" element={<EditReview />} />
-                            <Route path="chats" element={<Chats />} />
                             <Route path="create-ride" element={<CreateRide />} />
                             <Route path="ride-history" element={<RideHistory />} />
                         </Route>

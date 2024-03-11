@@ -137,11 +137,12 @@
 
     .my-profile-about {
         text-align: left;
-        width: 300px;
+        width: auto;
+        margin-left: 30px;
     }
 
     .text-area-width {
-        width: 300px !important;
+        width: 290px !important;
     }
 
     .grid-my-profile-edit {

@@ -39,12 +39,6 @@ export default function Sidebar() {
           </a>
         </li>
         <li>
-        <a type="button" onClick={() => navigate("/profile/chats")} className={`nav-link ${isActive('/profile/chats') ? 'active' : ''}`}>
-            <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#people-circle"></use></svg>
-            Chaty
-          </a>
-        </li>
-        <li>
           <a type="button" onClick={() => navigate("/profile/ride-history")} className={`nav-link ${isActive('/profile/ride-history') ? 'active' : ''}`}>
             <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#grid"></use></svg>
             História jázd
