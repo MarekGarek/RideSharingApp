@@ -45,9 +45,9 @@ export default function Trips() {
             <span className="slogan">Dostupné cesty : </span>
         </p>
 
-        <TripComponent/>
-        <TripComponent bg="#f7f7f7"/>
-        <TripComponent/>
+        <TripComponent usage={1}/>
+        <TripComponent usage={1} bg="#f7f7f7"/>
+        <TripComponent usage={1}/>
         
         </>
     )

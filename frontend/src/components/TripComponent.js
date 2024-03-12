@@ -2,7 +2,7 @@ import '../css/TripComponent.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate } from 'react-router-dom';
 
-export default function TripComponent({bg}) {
+export default function TripComponent({bg, usage}) {
     const navigate = useNavigate();
     return(
         <>
@@ -74,10 +74,10 @@ export default function TripComponent({bg}) {
             <div className="grid-tripc-capacity">
                 <p>
                     <div>
-                        <a className="label-trpc">Voľné miesta: </a>
+                        <a className="label-trpc">Miesta &nbsp;a&nbsp; kapacita: </a>
                     </div>
                     <div>
-                        <a className="label-var">3/5</a>    
+                        <a className="label-var">3/5 &nbsp;&nbsp; 120/350l</a>    
                     </div>
                 </p>
             </div>
@@ -95,6 +95,8 @@ export default function TripComponent({bg}) {
             </div>
 
             <div className="grid-tripc-log">
+            { usage === 1 ? (
+            <>
             <Dropdown>
                 <Dropdown.Toggle className="btn btn-outline-light btn-floating m-1 btn-primary" id="dropdown-basic">
                      Prihlásiť sa
@@ -112,6 +114,20 @@ export default function TripComponent({bg}) {
                     <Dropdown.Item type="button" > Odoslať </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
+            </>) : (
+                <>
+                { usage === 2 ? (
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
+                    onClick={() => {navigate("/profile/edit-review")}}>Napíš recenziu</button>
+                ) : (
+                    <>  {/* Dalsi if lognuty user je tvorca cesty, vtedy ju moze zrusit / editnut*/}
+                        <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
+                    </>
+                    
+                )}
+                </>
+            )}
+            
 
             </div>
 

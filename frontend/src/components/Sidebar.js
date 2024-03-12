@@ -39,6 +39,12 @@ export default function Sidebar() {
           </a>
         </li>
         <li>
+          <a type="button" onClick={() => navigate("/profile/current-ride")} className={`nav-link ${isActive('/profile/current-ride') ? 'active' : ''}`}>
+            <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#grid"></use></svg>
+            Aktuálne jazdy
+          </a>
+        </li>
+        <li>
           <a type="button" onClick={() => navigate("/profile/ride-history")} className={`nav-link ${isActive('/profile/ride-history') ? 'active' : ''}`}>
             <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#grid"></use></svg>
             História jázd
