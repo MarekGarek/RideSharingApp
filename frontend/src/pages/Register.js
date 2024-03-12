@@ -1,8 +1,74 @@
 import { useNavigate } from 'react-router-dom';
 import '../css/Register.css';
+import { useEffect, useState, useRef } from "react";
+import axios from 'axios';
+
+const LOGIN_REGEX = /^[a-zA-Z][a-zA-Z0-9]{4,20}$/;              // [zacina] [obsahuje] {rozsah/dlzka}
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{4,20}$/; // musí obsahovať jedno male,velke pismeno a cislo
 
 export default function Register() {   
     const navigate = useNavigate();
+    const loginRef = useRef();
+
+    const [formMessage, setFormMessage] = useState('');
+
+    const [name, setName] = useState('');
+    const [surName, setSurName] = useState('');
+    const [email, setEmail] = useState('');
+
+    const [login, setLogin] = useState('');
+    const [validLogin, setValidLogin] = useState(false);
+    
+    const [pwd, setPwd] = useState('');
+    const [validPwd, setValidPwd] = useState(false);
+    
+    const [pwd2, setPwd2] = useState('');
+    const [validPwd2, setValidPwd2] = useState(false);
+
+    //skontrolujem ci login obsahuje vsetky znaky ktore ma podla regexu
+    useEffect(() => {
+        const result = LOGIN_REGEX.test(login);
+        setValidLogin(result);
+    },[login])
+
+    //to iste s heslami
+    useEffect(() => {
+        const result = PWD_REGEX.test(pwd);
+        setValidPwd(result);
+        const match = pwd === pwd2;
+        setValidPwd2(match);
+    },[pwd, pwd2])
+
+    let data = {
+        login: login,
+        password: pwd,
+        email: email,
+        name: name,
+        surname: surName,
+        age: 30,
+        isAdmin: "N",
+        aboutMe: "Som nadšený programátor a milovník technológií."
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/register', data);
+            if (response.status === 201) {
+                setFormMessage(<p className="green">Registrácia prebehla úspešne!</p>);
+            } else {
+                const errorMessage = response.data ? response.data : 'Neznáma chyba';
+                setFormMessage(<p className="red">{errorMessage}</p>);  
+            }
+        } catch (error) {
+            console.error('Chyba zo servera:', error);
+            let serverMessage = 'Chyba pri odosielaní dát';
+            if (error.response && error.response.data) {
+                serverMessage = error.response.data || serverMessage;
+            }
+            setFormMessage(<p className="red">{serverMessage}</p>);
+        }
+    };
    
     return (
         <>
@@ -19,34 +85,53 @@ export default function Register() {
                 <form>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example1cg">Meno</label>
-                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" />
+                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" 
+                            onChange={(e)=>{setName(e.target.value)}}/>
                 </div>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example1cg">Priezvisko</label>
-                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" />
+                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" 
+                            onChange={(e)=>{setSurName(e.target.value)}}/>
                 </div>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example3cg">Email</label>
-                    <input type="email" id="form3Example3cg" className="form-control form-control-lg" />
+                    <input type="email" id="form3Example3cg" className="form-control form-control-lg" 
+                            onChange={(e)=>{setEmail(e.target.value)}}/>
                 </div>
                 <div className="form-outline mb-2">
-                    <label className="form-label" htmlFor="form3Example3cg">Login</label>
-                    <input type="email" id="form3Example3cg" className="form-control form-control-lg" />
+                    <label className="form-label" htmlFor="form3Example3cg">
+                        Login &nbsp;
+                        {!validLogin ? <i className="bi bi-x-lg red"></i> : <i className="bi bi-check2 green"></i>}
+                    </label>
+                    <input type="text" id="form3Example3cg" className="form-control form-control-lg" 
+                            ref={loginRef} autoComplete="off" required 
+                            onChange={(e) => setLogin(e.target.value)}/>
                 </div>
                 <div className="form-outline mb-2">
-                    <label className="form-label" htmlFor="form3Example4cg">Heslo</label>
-                    <input type="password" id="form3Example4cg" className="form-control form-control-lg" />
+                    <label className="form-label" htmlFor="form3Example4cg">
+                        Heslo &nbsp;
+                        {!validPwd ? <i className="bi bi-x-lg red"></i> : <i className="bi bi-check2 green"></i>}
+                    </label>
+                    <input type="password" id="form3Example4cg" className="form-control form-control-lg" 
+                            required onChange={(e) => setPwd(e.target.value)}/>
                 </div>
                 <div className="form-outline mb-2">
-                    <label className="form-label" htmlFor="form3Example4cdg">Zopakuj heslo</label>
-                    <input type="password" id="form3Example4cdg" className="form-control form-control-lg" />
+                    <label className="form-label" htmlFor="form3Example4cdg">
+                        Zopakuj heslo &nbsp;
+                        {!validPwd || !validPwd2 ? <i className="bi bi-x-lg red"></i> : <i className="bi bi-check2 green"></i>}
+                    </label>
+                    <input type="password" id="form3Example4cdg" className="form-control form-control-lg" 
+                            required onChange={(e) => setPwd2(e.target.value)}/>
                 </div>
                 <br/>
                 <div className="d-flex justify-content-center">
-                    <button type="button" className="btn btn-outline-light btn-floating px-5 login-btn">Register</button>
+                    <button type="submit" className="btn btn-outline-light btn-floating px-5 login-btn"
+                        disabled={!validLogin || !validPwd || !validPwd2 ? true : false} 
+                        onClick={handleSubmit}>Register
+                    </button>
                 </div>
                 <p className="text-center text-muted mt-4 mb-0 white">Máš už vytvorený účet ? <a role="button" onClick={() => navigate("/login")} className="fw-bold text-black-50"><u>Prihlásiť sa</u></a></p>
-                
+                {formMessage}
                 </form>
             </div>
             </div>

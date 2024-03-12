@@ -19,16 +19,25 @@ public class UserEntity {
     @Id
     @Column(nullable = false, unique = true)
     private String login;
+
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false, unique = true)
+
+    @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
-    private String surName;
-    @Column(nullable = false)
+    private String surname;
+
+    @Column(nullable = true)
     private int age;
-    @Column(nullable = false)
+
+    @Column(name = "is_admin", nullable = false)
     private char isAdmin;
+
+    @Column(name = "about_me", nullable = true)
+    private String aboutMe;
 }

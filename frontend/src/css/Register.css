@@ -35,3 +35,11 @@ body.register-page {
 .main-content {
     display: grid;
 }
+
+.green {
+    color: #4CAF50;
+}
+
+.red {
+    color: brown;
+}

@@ -1,6 +1,7 @@
 package com.RideSharingApp.services.impl;
 
 import com.RideSharingApp.domain.entities.UserEntity;
+import com.RideSharingApp.exception.DuplicateLoginException;
 import com.RideSharingApp.repositories.UserRepository;
 import com.RideSharingApp.services.UserService;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,14 @@ public class UserServiceImpl implements UserService {
                 false)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public UserEntity save(UserEntity userEntity) {
+        if (userRepository.findById(userEntity.getLogin()).isPresent()) {
+            throw new DuplicateLoginException("Používateľ " + userEntity.getLogin() + " už existuje.");
+        }
+        return userRepository.save(userEntity);
+    }
 }
+
+
