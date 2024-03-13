@@ -1,8 +1,36 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useContext } from "react";
+import axios from 'axios';
 import '../css/Login.css';
 
 export default function Login() {
     const navigate = useNavigate();
+
+    const [login, setLogin] = useState('');
+    const [password, setPassword] = useState('');
+//    const [success, setSuccess] = useState(false);
+//    const [errMsg, setErrMsg] = useState('');
+//    const [isLoged, setIsLoged] = useState(false);
+
+    
+    let data = {
+        login: login,
+        password: password
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/register', data);
+            if (response.status === 200) { // 20?
+                //nastaviť cookies loged
+            } else {
+                //zly login/heslo
+            }
+        } catch (err) {
+            //err
+        }
+    }   
   
     return (
         <> 
@@ -22,6 +50,8 @@ export default function Login() {
                             <input type="text"
                                    id="typeEmailX" 
                                    className="form-control form-control-lg" 
+                                   onChange={(e) => setLogin(e.target.value)}
+                                   value={login}
                                    required
                             />
                             <label className="form-label" htmlFor="typeEmailX">Login</label>
@@ -30,7 +60,9 @@ export default function Login() {
                         <div className="form-outline form-white mb-4">
                             <input type="password" 
                                    id="typePasswordX" 
-                                   className="form-control form-control-lg" 
+                                   className="form-control form-control-lg text-black"
+                                   onChange={(e) => setPassword(e.target.value)}
+                                   value={password}
                                    required
                             />
                             <label className="form-label" htmlFor="typePasswordX">Heslo</label>
@@ -38,7 +70,7 @@ export default function Login() {
 
                         <button className="btn btn-outline-light btn-floating px-5 login-btn"
                                 type="submit"
-                                > Prihlásiť
+                                onClick= {handleSubmit}> Prihlásiť
                         </button>
 
                         <div className="d-flex justify-content-center text-center mt-4 pt-1 social-media-login">

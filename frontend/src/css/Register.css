@@ -6,7 +6,7 @@ body.register-page {
 }
 
 .bottom-padding {
-    padding-bottom: 50px;
+    padding-bottom: 70px;
 }
 
 @media (max-width: 600px) {
@@ -37,7 +37,7 @@ body.register-page {
 }
 
 .green {
-    color: #4CAF50;
+    color: #4caf50;
 }
 
 .red {

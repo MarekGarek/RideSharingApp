@@ -41,6 +41,5 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>("Vyskytla sa chyba. Skús znova.",HttpStatus.BAD_REQUEST);
         }
-
     }
 }

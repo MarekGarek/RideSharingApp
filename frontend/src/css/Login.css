@@ -20,3 +20,7 @@ body.login-page {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
+
+.text-black:hover {
+    color: black !important;
+}

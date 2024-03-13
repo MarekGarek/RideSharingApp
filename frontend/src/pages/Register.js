@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Register.css';
 import { useEffect, useState, useRef } from "react";
 import axios from 'axios';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LOGIN_REGEX = /^[a-zA-Z][a-zA-Z0-9]{4,20}$/;              // [zacina] [obsahuje] {rozsah/dlzka}
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{4,20}$/; // musí obsahovať jedno male,velke pismeno a cislo
@@ -9,8 +11,6 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{4,20}$/; // musí obsahov
 export default function Register() {   
     const navigate = useNavigate();
     const loginRef = useRef();
-
-    const [formMessage, setFormMessage] = useState('');
 
     const [name, setName] = useState('');
     const [surName, setSurName] = useState('');
@@ -24,6 +24,39 @@ export default function Register() {
     
     const [pwd2, setPwd2] = useState('');
     const [validPwd2, setValidPwd2] = useState(false);
+
+    const [reg, setReg] = useState(false);
+
+    const toastSucc = () => {
+        toast.success('Registrácia prebehla úspešne!', {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          onClose: () => navigate("/login")
+        });
+      };
+
+      const toastErr = (err) => {
+        toast.error(err, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+            });
+      }
+
+
 
     //skontrolujem ci login obsahuje vsetky znaky ktore ma podla regexu
     useEffect(() => {
@@ -45,9 +78,7 @@ export default function Register() {
         email: email,
         name: name,
         surname: surName,
-        age: 30,
-        isAdmin: "N",
-        aboutMe: "Som nadšený programátor a milovník technológií."
+        isAdmin: "N"
     }
 
     const handleSubmit = async (e) => {
@@ -55,10 +86,11 @@ export default function Register() {
         try {
             const response = await axios.post('http://localhost:8080/register', data);
             if (response.status === 201) {
-                setFormMessage(<p className="green">Registrácia prebehla úspešne!</p>);
+                toastSucc();
+                setReg(true);
             } else {
                 const errorMessage = response.data ? response.data : 'Neznáma chyba';
-                setFormMessage(<p className="red">{errorMessage}</p>);  
+                toastErr(errorMessage);
             }
         } catch (error) {
             console.error('Chyba zo servera:', error);
@@ -66,7 +98,7 @@ export default function Register() {
             if (error.response && error.response.data) {
                 serverMessage = error.response.data || serverMessage;
             }
-            setFormMessage(<p className="red">{serverMessage}</p>);
+            toastErr(serverMessage);
         }
     };
    
@@ -74,6 +106,7 @@ export default function Register() {
         <>
         <body className="register-page">
         <div className="bottom-padding">
+        <ToastContainer/>
         <section className="vh-100 bg-image">
         <div className="mask d-flex align-items-center h-100 gradient-custom-3">
         <div className="container h-100">
@@ -82,20 +115,23 @@ export default function Register() {
             <div className="card radius-register">
             <div className="card-body p-5 bg-orange">
                 <h2 className="text-uppercase text-center mb-5 fw-bold white">Vytvor si účet</h2>
-                <form>
+                <form onSubmit={handleSubmit}>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example1cg">Meno</label>
-                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" 
+                    <input type="text" className="form-control form-control-lg" 
+                            required minLength="3" maxLength="45"
                             onChange={(e)=>{setName(e.target.value)}}/>
                 </div>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example1cg">Priezvisko</label>
-                    <input type="text" id="form3Example1cg" className="form-control form-control-lg" 
+                    <input type="text" className="form-control form-control-lg" 
+                            required minLength="3" maxLength="45"
                             onChange={(e)=>{setSurName(e.target.value)}}/>
                 </div>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example3cg">Email</label>
-                    <input type="email" id="form3Example3cg" className="form-control form-control-lg" 
+                    <input type="email" className="form-control form-control-lg"
+                            required maxLength="100"
                             onChange={(e)=>{setEmail(e.target.value)}}/>
                 </div>
                 <div className="form-outline mb-2">
@@ -104,7 +140,7 @@ export default function Register() {
                         {!validLogin ? <i className="bi bi-x-lg red"></i> : <i className="bi bi-check2 green"></i>}
                     </label>
                     <input type="text" id="form3Example3cg" className="form-control form-control-lg" 
-                            ref={loginRef} autoComplete="off" required 
+                            ref={loginRef} autoComplete="off" required maxLength="15"
                             onChange={(e) => setLogin(e.target.value)}/>
                 </div>
                 <div className="form-outline mb-2">
@@ -126,12 +162,15 @@ export default function Register() {
                 <br/>
                 <div className="d-flex justify-content-center">
                     <button type="submit" className="btn btn-outline-light btn-floating px-5 login-btn"
-                        disabled={!validLogin || !validPwd || !validPwd2 ? true : false} 
-                        onClick={handleSubmit}>Register
+                        disabled={!validLogin || !validPwd || !validPwd2 || reg ? true : false} >Register
                     </button>
                 </div>
-                <p className="text-center text-muted mt-4 mb-0 white">Máš už vytvorený účet ? <a role="button" onClick={() => navigate("/login")} className="fw-bold text-black-50"><u>Prihlásiť sa</u></a></p>
-                {formMessage}
+                <br/>
+                <p className="text-center text-muted mt-4 mb-0 white">Máš už vytvorený účet ? &nbsp;
+                    <a role="button" onClick={() => navigate("/login")} className="fw-bold text-black-50">
+                        <u>Prihlásiť sa</u>
+                    </a>
+                </p>
                 </form>
             </div>
             </div>
