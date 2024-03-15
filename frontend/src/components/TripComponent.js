@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 export default function TripComponent({bg, usage}) {
     const navigate = useNavigate();
+
+    const autor="Test1";
+
     return(
         <>
         <div className="grid-tripc" style={{backgroundColor: bg}}>
@@ -13,7 +16,7 @@ export default function TripComponent({bg, usage}) {
                         <a className="label-trpc">Autor:</a> 
                     </div>
                     <div>
-                        <a className="label-var">Marek4</a>
+                        <a className="label-var">{autor}</a>
                     </div>
                 </p>
                 <hr class="featurette-divider"></hr>
@@ -118,12 +121,11 @@ export default function TripComponent({bg, usage}) {
                 <>
                 { usage === 2 ? (
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
-                    onClick={() => {navigate("/profile/edit-review")}}>Napíš recenziu</button>
+                    onClick={() => {navigate(`/profile/edit-review?reviewer=${autor}`)}}>Napíš recenziu</button>
                 ) : (
-                    <>  {/* Dalsi if lognuty user je tvorca cesty, vtedy ju moze zrusit / editnut*/}
+                    <>  {/* TODO : Dalsi if lognuty user je tvorca cesty, vtedy ju moze zrusit / editnut*/}
                         <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
                     </>
-                    
                 )}
                 </>
             )}

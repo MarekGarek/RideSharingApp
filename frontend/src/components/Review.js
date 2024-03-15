@@ -1,8 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import '../css/Review.css';
+import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import React, { useState } from 'react';
 
-export default function Review({date,user,title,text,idreviews,recommendation,stars,rev}) {
+export default function Review({date,user,title,text,recommendation,stars,rev,id, onDelete}) {
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+    const handleDelete = () => {
+    onDelete(id);
+    handleClose();
+  };
 
     let background = "";
     if (recommendation == 1) {
@@ -32,7 +44,6 @@ export default function Review({date,user,title,text,idreviews,recommendation,st
         for (let i = 0; i < emptyStars; i++) {
             result += empty;
         }
-
         return result;
     }
 
@@ -45,13 +56,27 @@ export default function Review({date,user,title,text,idreviews,recommendation,st
             <div className="editik">
             {rev == "Recenzent: " ? (
             <>
-                <button className="edit-review" onClick={() => {navigate("/profile/edit-review")}}> 
+                <button className="edit-review" onClick={() => {navigate(`/profile/edit-review?id=${id}`)}}>
                     <i class="bi bi-pen"></i> 
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <button className="delete-review"> 
-                    <i class="bi bi-x-lg"></i>
+                <button className="delete-review" onClick={handleShow}>
+                    <i className="bi bi-x-lg"></i>
                 </button>
+
+                <Modal show={showModal} onHide={handleClose}>
+                    <Modal.Header>
+                    <Modal.Title>Naozaj chceš zmazať túto recenziu?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Footer>
+                    <Button variant="primary" onClick={handleDelete}>
+                        Áno, vymazať
+                    </Button>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Nie
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
             </>) : null }
             </div>
                 

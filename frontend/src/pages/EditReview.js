@@ -1,67 +1,140 @@
-import { useState, useEffect, useContext } from 'react';
-import {useLocation} from'react-router-dom';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 export default function EditReview(){
     const navigate = useNavigate();
-
-    //získanie parametra z URL
+    
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const encoded = searchParams.get('id');
-    //dekodovanie parametra 
-    const encodedJsonItem = decodeURIComponent(encoded);
-    const item = JSON.parse(encodedJsonItem);
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const reviewer = params.get('reviewer');
+   
+    const author = "Marek14"; //TODO: lognutý autor
 
-    let [title, setTitle] = useState();
-    let [text, setText] = useState();
-    let [stars, setStars] = useState();
-    let [recommendation, setRecommendation] = useState();
-    let [formMessage, setFormMessage] = useState();
+    const [review, setReview] = useState([]);
+    const [title, setTitle] = useState();
+    const [text, setText] = useState();
+    const [stars, setStars] = useState();
+    const [authorDB, setAuthorDB] = useState();
+    const [reviewerDB, setReviewerDB] = useState();
+    const [recommendation, setRecommendation] = useState();
+
+    const [submited, setSubmited] = useState(false);
+
+    const fetchReview = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/reviews/${id}`);
+            setReview(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (review) {
+            setTitle(review.title);
+            setText(review.text);
+            setStars(review.stars);
+            setRecommendation(review.recommendation == 1);
+            setAuthorDB(review.author);
+            setReviewerDB(review.reviewer);
+        }
+    }, [review]);
+
+    useEffect(() => {
+        fetchReview();
+    }, []);
 
     const postData = async () => {
         try {
-            const response = await axios.post('http://localhost:4000/post/review', 
+            const response = await axios.post('http://localhost:8080/reviews', 
             {
-                title: title,
+                author: author,
+                reviewer: reviewer,
                 text: text,
+                date: new Date().toISOString(),
                 stars: stars,
-                recommendation: (recommendation ? 1 : 0),
+                title: title,
+                recommendation: recommendation
             });
-            setFormMessage(<p className="formCheck"> {response.formData} </p>);
-            navigate('/reviews');
+            if (response.status == 201) {
+                toastSucc("/profile/written-reviews");
+                setSubmited(true);
+            } else {
+                toastErr(response.status);
+            }
+            
           } catch (error) {
             console.error(error);
-            setFormMessage(<p className="formError">Chyba pri odosielaní dát</p>);
+            toastErr(error.code);
           }
     };
 
     const putData = async () => {
         try {
-            const response = await axios.put('http://localhost:4000/put/review', 
+            const response = await axios.put('http://localhost:8080/reviews', 
             {
-                title: title,
+                idReview: id,
+                author: authorDB,
+                reviewer: reviewerDB,
                 text: text,
+                date: new Date().toISOString(),
                 stars: stars,
-                idreview: item.idreviews,
-                recommendation: (recommendation ? 1 : 0),
+                title: title,
+                recommendation: recommendation    
             });
-            setFormMessage(<p className="formCheck"> {response.formData} </p>);
-            navigate('/reviews');
+            if (response.status == 200) {
+                toastSucc("/profile/written-reviews");
+                setSubmited(true);
+            } else {
+                toastErr(response.status);
+            }
+            
           } catch (error) {
             console.error(error);
-            setFormMessage(<p className="formError">Chyba pri odosielaní dát PUT</p>);
+            toastErr(error.code);
           }
     };
 
+
+    const toastSucc = (url) => {
+        toast.success('Recenzia bola úspešne odoslaná!', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          onClose: () => navigate(url)
+        });
+      };
+
+    const toastErr = (err) => {
+    toast.error(err, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+        });
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFormMessage('');
-        if (item === null) {
-            postData();
-        } else {
+        if (id) {
             putData();
+            setSubmited(true);
+        } else {
+            postData();
         }
     };
 
@@ -69,10 +142,12 @@ export default function EditReview(){
     return(
         <>
         <br/><br/>
+        <ToastContainer/>
+        <form onSubmit={handleSubmit}> 
         <div className="grid-reviews greenBG">
             <div className="review">
                 <label>Hodnotenie od 1 -{">"} 10 (najlepšie)</label><br/>
-                <input type="number" min="1" max="10" style={{width: '75px'}} value={stars}
+                <input type="number" min="1" max="10" style={{width: '75px'}} value={stars} required
                        onChange={(e) => setStars(e.target.value)}></input>
             </div>
 
@@ -81,7 +156,8 @@ export default function EditReview(){
 
             <div className="header">
                 <label style={{fontWeight: 'normal'}}>Nadpis:</label><br/>
-                <input type="text" style={{width: '100%'}} value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                <input type="text" style={{width: '100%'}} value={title} required
+                       onChange={(e) => setTitle(e.target.value)}></input>
             </div>
             <div className="comment">
                 <lavel>Recenzia:</lavel><br/>
@@ -94,9 +170,11 @@ export default function EditReview(){
                        onChange={(e) => setRecommendation(e.target.checked)}></input>
             </div>
             <div className="date greenBG" style={{paddingBottom: '0px', paddingTop: '4px'}}>
-                <button className="submit btn btn-outline-light btn-floating px-5 login-btn" onClick={handleSubmit}>Odoslať</button>
+                <button className="submit btn btn-outline-light btn-floating px-5 login-btn"
+                disabled={ submited ? true : false}>Odoslať</button>
             </div>
         </div>
+        </form>
         <br/><br/>
         </>
     )

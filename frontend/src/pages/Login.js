@@ -8,10 +8,6 @@ export default function Login() {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-//    const [success, setSuccess] = useState(false);
-//    const [errMsg, setErrMsg] = useState('');
-//    const [isLoged, setIsLoged] = useState(false);
-
     
     let data = {
         login: login,

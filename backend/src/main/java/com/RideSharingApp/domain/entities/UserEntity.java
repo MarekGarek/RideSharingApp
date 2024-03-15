@@ -17,19 +17,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 15)
     private String login;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 45)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 45)
     private String surname;
 
     @Column(nullable = true)
@@ -38,6 +38,6 @@ public class UserEntity {
     @Column(name = "is_admin", nullable = false)
     private char isAdmin;
 
-    @Column(name = "about_me", nullable = true)
+    @Column(name = "about_me", nullable = true, length = 1000)
     private String aboutMe;
 }
