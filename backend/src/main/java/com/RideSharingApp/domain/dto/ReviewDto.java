@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +16,8 @@ public class ReviewDto {
     private String author;
     private String reviewer;
     private String text;
-    private String date;
-    private short stars;
+    private Date date;
+    private byte stars;
     private String title;
     private boolean recommendation;
 }

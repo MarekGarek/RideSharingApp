@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,10 +32,10 @@ public class ReviewEntity {
     private String text;
 
     @Column(nullable = false)
-    private String date;
+    private Date date;
 
     @Column(nullable = false)
-    private short stars;
+    private byte stars;
 
     @Column(nullable = false, length = 45)
     private String title;

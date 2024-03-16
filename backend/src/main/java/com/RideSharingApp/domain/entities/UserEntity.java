@@ -33,7 +33,7 @@ public class UserEntity {
     private String surname;
 
     @Column(nullable = true)
-    private int age;
+    private short age;
 
     @Column(name = "is_admin", nullable = false)
     private char isAdmin;
