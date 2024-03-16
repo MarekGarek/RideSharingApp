@@ -12,7 +12,7 @@ export default function Cars() {
     const generateCar = () => {
         const newCar = {
             id: mapId,
-            component: <CarComponent edit={true} img1="car.png" deleteCar={() => deleteCar(mapId)}/>,
+            component: <CarComponent edit={true} img1="car.png" deleteCar={() => deleteCar(mapId)} fetchCars={() => fetchCars()}/>,
         };
         setNewCars([...newCars, newCar]);
         setMapId(mapId+1);

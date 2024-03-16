@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import car from '../images/car.png';
 import '../css/Cars.css';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 
-export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1, img1, edit, hide, deleteCar}) {
+export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1, img1, edit, hide, deleteCar, fetchCars}) {
     const [editMode, setEditMode] = useState(edit);
     const widthClass = !hide ? "" : "special-width";
-
-   
 
     const [idCar, setIdCar] = useState('');
     const [owner, setOwner] = useState('Marek14');
     const [model, setModel ] = useState('');
     const [seats, setSeats] = useState('');
     const [stk, setStk] = useState(stk1);
-    const [img, setImg] = useState(img1);
+    const [img, setImg] = useState(img1 || 'car.png');
     const [year, setYear] = useState('');
     const [trunk, setTrunk] = useState('');
 
@@ -37,6 +34,7 @@ export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1
     //     }
     // }, [cars]);
 
+    const [btn, setBtn] = useState(false);
     const toastSucc = (msg) => {
         toast.success(msg, {
           position: "top-right",
@@ -48,6 +46,7 @@ export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1
           progress: undefined,
           theme: "colored",
           transition: Bounce,
+          onClose: () => {deleteCar();fetchCars();}
         });
       };
 
@@ -69,6 +68,7 @@ export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1
         setEditMode(!editMode);
     };
 
+   
     const postData = async () => {
         try {
             const formData = new FormData();
@@ -90,11 +90,11 @@ export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1
                 }
             });
             if (response.status == 201) {
-                toastSucc("Auto bolo úspešne pridané!");
+                setBtn(true);
+                toastSucc('Auto bolo úspešne pridané.');
             } else {
-                toastErr(response.status);
+                toastErr(response.status); 
             }
-            toggleEditMode();
           } catch (error) {
             if (error.response.status == 409) {
                 toastErr("Auto s rovnakou ŠPZ už existuje. Skontrolujte si svoju ŠPZ!");
@@ -144,8 +144,8 @@ export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1
             </div>
             <div className="grid-my-profile-heading-btn">
                 { editMode ? (
-                    <>
-                    <button type="submit" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" >Uložiť</button>
+                    <>                                              
+                    <button type="submit" disabled={btn} className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" >Uložiť</button>
                     <button type="button" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" 
                             onClick={deleteCar}>Zmazať</button>
                     </>
@@ -165,7 +165,7 @@ export default function CarComponent({idcar, model1, year1, seats1, trunk1, stk1
         <br/>
         <div className={`grid-cars ${widthClass}`}>
             <div className="grid-cars-photo">
-                <img src={typeof img === 'string' ? `http://localhost:8080/car-images/${img}` : (img ? URL.createObjectURL(img) : '')} className="user-photo" alt="User photo"/>
+                <img src={typeof img === 'string' ? `http://localhost:8080/images/car-images/${img}` : (img ? URL.createObjectURL(img) : '')} className="user-photo" alt="User photo"/>
             </div>
 
             <div className="grid-cars-edit">

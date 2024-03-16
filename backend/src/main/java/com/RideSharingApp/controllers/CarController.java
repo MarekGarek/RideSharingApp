@@ -27,7 +27,7 @@ public class CarController {
     private CarService carService;
     private Mapper<CarEntity, CarDto> carMapper;
 
-    private static final String CAR_IMAGE_DIRECTORY = "C:\\Users\\garek\\RideSharingApp\\backend\\src\\main\\resources\\static\\car-images\\";
+    private static final String CAR_IMAGE_DIRECTORY = "C:\\Users\\garek\\RideSharingApp\\images\\car-images\\";
 
     public CarController(CarService carService, Mapper<CarEntity, CarDto> carMapper) {
         this.carService = carService;
