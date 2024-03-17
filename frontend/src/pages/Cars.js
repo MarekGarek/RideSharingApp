@@ -1,5 +1,4 @@
 import CarComponent from '../components/CarComponent';
-import car from '../images/car.png';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -12,7 +11,7 @@ export default function Cars() {
     const generateCar = () => {
         const newCar = {
             id: mapId,
-            component: <CarComponent edit={true} img1="car.png" deleteCar={() => deleteCar(mapId)} fetchCars={() => fetchCars()}/>,
+            component: <CarComponent edit={true} deleteCar={() => deleteCar(mapId)} fetchCars={() => fetchCars()}/>,
         };
         setNewCars([...newCars, newCar]);
         setMapId(mapId+1);
@@ -27,7 +26,6 @@ export default function Cars() {
         try {
             const response = await axios.get('http://localhost:8080/cars', {params: {owner: owner}});
             setCars(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error(error);
         }
@@ -36,6 +34,15 @@ export default function Cars() {
     useEffect(() => {
         fetchCars();
     }, []);
+
+    const handleDelete = async (idCar) => {
+        try {
+            await axios.delete(`http://localhost:8080/cars/${idCar}`);
+            fetchCars();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
     return (
         <>
@@ -48,28 +55,18 @@ export default function Cars() {
                     onClick={generateCar}>Nové auto</button>
             </div>
         </div>
-        {/* 
-        <CarComponent idcar="LV 502HE" model1="Mazda 3" year1="2008" seats1="5" trunk1="350" stk1="25.5.2025" img1={mazda} edit={false} />
-        */}
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
+        {newCars.map(newCar => newCar.component)}
         {
             cars.map((car) => (
                 <CarComponent
                   key={car.idCar}
-                  idcar={car.idCar}
-                  model1={car.model}
-                  year1={car.modelYear}
-                  seats1={car.seats}
-                  stk1={car.stk}
-                  img1={car.img}
-                  trunk1={car.trunkSpace}
+                  car={car}
                   edit={false}
+                  onDelete={handleDelete}
                 />
               ))
         }
-        
-        
-        
-        {newCars.map(newCar => newCar.component)}
         </>
     )
 }

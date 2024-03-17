@@ -25,6 +25,7 @@ export default function CreateRide() {
             <div className="grid-my-profile-heading-btn"> 
             </div>
         </div>
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
 
         <div className="history-trip-center">        
         <div className="grid-tripc">

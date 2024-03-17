@@ -37,6 +37,7 @@ export default function WrittenReviews() {
                 <h1>Napísané recenzie</h1>
             </div>
         </div>
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
 
         {
             reviews.map((review) => (

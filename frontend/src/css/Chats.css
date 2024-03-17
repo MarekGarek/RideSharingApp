@@ -1,3 +1,8 @@
+body.chats-page {
+    background-image: url('../images/bgchat.webp');
+    background-position: bottom center;
+}
+
 .grid-chat-sidebar {grid-area: grid-chat-sidebar;}
 .grid-chat-chat {grid-area: grid-chat-chat;}
 .grid-chat-submit {grid-area: grid-chat-submit;}

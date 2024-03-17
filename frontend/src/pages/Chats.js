@@ -63,16 +63,13 @@ export default function Chats() {
         }
     }
 
-
-
     return(
         <>
+        <body className="chats-page">
         <br/>
-        <h1 role="button" onClick={switchPage} className="chat-heading">Čety</h1>
         <div className="grid-chat">
             <div className={`grid-chat-sidebar ${sidebar}`}>
                 <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white users-style">
-                    <a className="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom"></a>
                     <div className="list-group list-group-flush border-bottom scrollarea">
         
                     {user("Thomas Rodriguez")}
@@ -109,11 +106,9 @@ export default function Chats() {
                 </buttton>
             </div>
            
-
         </div>
-
-        
-
+        <br/>
+        </body>
         </>
     )
 }

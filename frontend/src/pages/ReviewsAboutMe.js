@@ -28,7 +28,7 @@ export default function ReviewsAboutMe() {
                 <h1>Recenzie o mne</h1>
             </div>
         </div>
-
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         {
             reviews.map((review) => (
                 <Review

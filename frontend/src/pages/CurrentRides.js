@@ -8,6 +8,7 @@ export default function CurrentRides() {
                 <h1>Aktuálne jázdy</h1>
             </div>
         </div>
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <div className="history-trip-center">
             <TripComponent usage={3}/>
             <TripComponent usage={3} bg="#f7f7f7"/>

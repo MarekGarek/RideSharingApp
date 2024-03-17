@@ -33,6 +33,11 @@
     width: 200px;
 }
 
+.save-btn:disabled {
+    opacity: none;
+    background-color: #e3b433ec;
+}
+
 @media (max-width: 1250px) {
     .grid-cars {
         grid-template-areas: 

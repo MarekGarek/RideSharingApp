@@ -8,6 +8,7 @@ export default function RideHistory() {
                 <h1>História jázd</h1>
             </div>
         </div>
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <div className="history-trip-center">
             <TripComponent usage={2}/>
             <TripComponent usage={2} bg="#f7f7f7"/>

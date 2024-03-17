@@ -1,9 +1,7 @@
 package com.RideSharingApp.controllers;
 
 import com.RideSharingApp.domain.dto.CarDto;
-import com.RideSharingApp.domain.dto.ReviewDto;
 import com.RideSharingApp.domain.entities.CarEntity;
-import com.RideSharingApp.domain.entities.ReviewEntity;
 import com.RideSharingApp.mappers.Mapper;
 import com.RideSharingApp.services.CarService;
 import org.springframework.http.HttpStatus;
@@ -12,12 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +20,6 @@ public class CarController {
     private CarService carService;
     private Mapper<CarEntity, CarDto> carMapper;
 
-    private static final String CAR_IMAGE_DIRECTORY = "C:\\Users\\garek\\RideSharingApp\\images\\car-images\\";
-
     public CarController(CarService carService, Mapper<CarEntity, CarDto> carMapper) {
         this.carService = carService;
         this.carMapper = carMapper;
@@ -36,37 +27,38 @@ public class CarController {
 
     @PostMapping(path = "/cars")
     public ResponseEntity<CarDto> createCar(@RequestParam("owner") String owner, @RequestParam("model") String model,
-                                            @RequestParam("seats") byte seats, @RequestParam("stk") String stkString,
+                                            @RequestParam("seats") byte seats, @RequestParam("stk") String stk,
                                             @RequestParam("modelYear") short modelYear, @RequestParam("trunkSpace") short trunkSpace,
                                             @RequestParam("idCar") String idCar,
-                                            @RequestParam(value = "file", required = false) MultipartFile file) throws ParseException {
-        if (carService.isExists(idCar)) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+                                            @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, ParseException {
+
+        if (carService.isExists(idCar)) {return new ResponseEntity<>(HttpStatus.CONFLICT);}
+        CarDto carDto = new CarDto(idCar,owner,model,null,seats,modelYear,trunkSpace,null);
+        CarEntity carEntity = carMapper.mapFrom(carDto);
+        CarEntity savedCarEntity = carService.save(carEntity, file, stk);
+        return new ResponseEntity<>(carMapper.mapTo(savedCarEntity), HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/cars/{unchangedIdCar}")
+    public ResponseEntity<CarDto> updateCar(@RequestParam("owner") String owner, @RequestParam("model") String model,
+                                            @RequestParam("seats") byte seats, @RequestParam("stk") String stk,
+                                            @RequestParam("modelYear") short modelYear, @RequestParam("trunkSpace") short trunkSpace,
+                                            @RequestParam("idCar") String idCar, @PathVariable("unchangedIdCar") String unchangedIdCar,
+                                            @RequestParam(value = "file", required = false) MultipartFile file) throws ParseException, IOException {
+        //if (carService.isExists(idCar)) {return new ResponseEntity<>(HttpStatus.CONFLICT);}
+        CarDto carDto = new CarDto(idCar,owner,model,null,seats,modelYear,trunkSpace,null);
+        CarEntity carEntity = carMapper.mapFrom(carDto);
+        CarEntity savedCarEntity = carService.update(carEntity, file, stk, unchangedIdCar);
+        return new ResponseEntity<>(carMapper.mapTo(savedCarEntity), HttpStatus.CREATED);
+
+    }
+
+    @DeleteMapping(path = "/cars/{idCar}")
+    public ResponseEntity deleteCar(@PathVariable("idCar") String idCar) throws IOException {
+        if (carService.delete(idCar)) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date stk = formatter.parse(stkString);
-        CarDto carDto = new CarDto(idCar,owner,model,stk,seats,modelYear,trunkSpace,null);
-        try {
-            String imgPath = null;
-            if (file != null && !file.isEmpty()) {
-                String originalFileName = file.getOriginalFilename();
-                String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-                String fileName = carDto.getIdCar() + extension;
-                Path path = Paths.get(CAR_IMAGE_DIRECTORY + fileName);
-                Files.copy(file.getInputStream(), path);
-                imgPath = carDto.getIdCar() + extension;
-            }
-
-            CarEntity carEntity = carMapper.mapFrom(carDto);
-            carEntity.setImg(imgPath);
-
-            CarEntity savedCarEntity = carService.save(carEntity);
-            return new ResponseEntity<>(carMapper.mapTo(savedCarEntity), HttpStatus.CREATED);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(path = "/cars")

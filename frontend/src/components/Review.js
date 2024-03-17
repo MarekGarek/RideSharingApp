@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import '../css/Review.css';
-import axios from 'axios';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import React, { useState } from 'react';
+import '../css/Review.css';
 
 export default function Review({date,user,title,text,recommendation,stars,rev,id, onDelete}) {
     const navigate = useNavigate();
@@ -49,7 +48,6 @@ export default function Review({date,user,title,text,recommendation,stars,rev,id
 
     return (
         <>
-        <hr class="featurette-divider custom-divider"></hr>
         <br></br>
         <div className={`grid-reviews ${background}`}>
             <div className="review" dangerouslySetInnerHTML={{ __html: drawStars(stars) }} />
@@ -66,15 +64,11 @@ export default function Review({date,user,title,text,recommendation,stars,rev,id
 
                 <Modal show={showModal} onHide={handleClose}>
                     <Modal.Header>
-                    <Modal.Title>Naozaj chceš zmazať túto recenziu?</Modal.Title>
+                        <Modal.Title>Naozaj chceš zmazať túto recenziu?</Modal.Title>
                     </Modal.Header>
                     <Modal.Footer>
-                    <Button variant="primary" onClick={handleDelete}>
-                        Áno, vymazať
-                    </Button>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Nie
-                    </Button>
+                        <Button variant="primary" onClick={handleDelete}>Áno, vymazať</Button>
+                        <Button variant="secondary" onClick={handleClose}> Nie</Button>
                     </Modal.Footer>
                 </Modal>
             </>) : null }
