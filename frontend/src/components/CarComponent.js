@@ -162,6 +162,17 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
         }
     };
     
+    const deleteModal = 
+    <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header>
+            <Modal.Title>Naozaj chceš zmazať auto?</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+            <Button variant="primary" onClick={handleDelete}>Áno, vymazať</Button>
+            <Button variant="secondary" onClick={handleClose}>Nie</Button>
+        </Modal.Footer>
+    </Modal>;
+
     return(
         <>
         <ToastContainer/>
@@ -178,7 +189,8 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
                     <>                                              
                     <button type="submit" disabled={btn} className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary save-btn" >Uložiť</button>
                     <button type="button" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" 
-                            onClick={deleteCar}>Zmazať</button>
+                            onClick={car ? handleShow : deleteCar}>Zmazať</button>
+                    {deleteModal}
                     </>
                 ) : (
                     <>
@@ -186,15 +198,7 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
                         onClick={toggleEditMode}>Upraviť</button>
                     <button type="button" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" 
                         onClick={handleShow} >Zmazať</button>
-                    <Modal show={showModal} onHide={handleClose}>
-                    <Modal.Header>
-                        <Modal.Title>Naozaj chceš zmazať auto?</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Footer>
-                        <Button variant="primary" onClick={handleDelete}>Áno, vymazať</Button>
-                        <Button variant="secondary" onClick={handleClose}>Nie</Button>
-                    </Modal.Footer>
-                    </Modal>
+                    {deleteModal}
                     </>
                 )}
                 

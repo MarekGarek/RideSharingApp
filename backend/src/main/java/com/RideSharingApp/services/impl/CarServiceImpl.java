@@ -105,6 +105,12 @@ public class CarServiceImpl implements CarService {
                 this.deleteCarEntity(unchangedIdCar);
                 String newName = fileService.renameFile(unchangedIdCarImg, carEntity.getIdCar());
                 carEntity.setImg(newName);
+            } else {
+                this.deleteCarEntity(unchangedIdCar);
+            }
+        } else {
+            if (file != null && !file.isEmpty()) {
+                this.delete(unchangedIdCar);
             }
         }
         return save(carEntity, file, stk);
