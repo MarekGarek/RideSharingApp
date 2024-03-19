@@ -19,16 +19,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    //userRepository.findAll() vráti Iterable<> -> konvert na List<>
-    @Override
-    public List<UserEntity> findAll() {
-        return StreamSupport.stream(userRepository
-                .findAll()
-                .spliterator(),
-                false)
-                .collect(Collectors.toList());
-    }
-
     @Override
     public UserEntity save(UserEntity userEntity) {
         if (userRepository.findById(userEntity.getLogin()).isPresent()) {
