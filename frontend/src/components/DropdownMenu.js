@@ -11,9 +11,9 @@ function DropdownMenu() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item type="button" onClick={() => navigate("/login")}> Prihlásiť </Dropdown.Item>
-        <Dropdown.Item type="button" onClick={() => navigate("/register")}> Registrovať </Dropdown.Item>
-        <Dropdown.Item type="button" onClick={() => navigate("/profile")}> Môj profil </Dropdown.Item>
+        <Dropdown.Item type="button" style={{width: 'auto'}} onClick={() => navigate("/login")}> Prihlásiť </Dropdown.Item>
+        <Dropdown.Item type="button" style={{width: 'auto'}} onClick={() => navigate("/register")}> Registrovať </Dropdown.Item>
+        <Dropdown.Item type="button" style={{width: 'auto'}} onClick={() => navigate("/profile")}> Môj profil </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

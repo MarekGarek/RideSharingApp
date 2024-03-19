@@ -43,8 +43,16 @@ a {all: unset;}
     font-family: cursive;
 }
 
-.dropdown-item {
-    width: auto !important;
+.dropdown.menu-show {
+    padding-left: 5px;
+  
+}
+
+.my-drpdwn-menu {
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    background-color:rgb(247, 247, 247);
 }
 
 .label-time {

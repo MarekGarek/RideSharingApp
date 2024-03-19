@@ -13,7 +13,7 @@ export default function TripComponent({bg, usage}) {
             <div className="grid-tripc-author">
                 <p>
                     <div>
-                        <a className="label-trpc">Autor:</a> 
+                        <a className="label-trpc">Šofér:</a> 
                     </div>
                     <div>
                         <a className="label-var">{autor}</a>
@@ -100,23 +100,33 @@ export default function TripComponent({bg, usage}) {
             <div className="grid-tripc-log">
             { usage === 1 ? (
             <>
+            <form>
             <Dropdown>
                 <Dropdown.Toggle className="btn btn-outline-light btn-floating m-1 btn-primary" id="dropdown-basic">
-                     Prihlásiť sa
+                Prihlásiť sa
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={(e) => {e.stopPropagation()}}> 
-                        <label>Počet osôb: &nbsp;</label>
-                        <input type="number" style={{width: '50px'}}></input>
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={(e) => {e.stopPropagation()}}> 
-                        <label>Batožina (l): &nbsp;</label>
-                        <input type="number" style={{width: '50px'}}></input>
-                    </Dropdown.Item>
-                    <Dropdown.Item type="button" > Odoslať </Dropdown.Item>
+                <div className="my-drpdwn-menu">
+                    <label htmlFor="pocetOsob">Počet osôb: &nbsp;&nbsp;&nbsp;</label>
+                    <input id="pocetOsob" type="number" style={{width: '50px', margin: '1px'}} required min="1"/>
+
+                    <label htmlFor="batozina">Batožina (l): &nbsp;&nbsp;&nbsp;</label>
+                    <input id="batozina" type="number" style={{width: '50px', margin: '1px'}} required min="0"/>
+
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <label>Zaplatiť : &nbsp;</label> <br/>
+                        <label>online&nbsp;</label>
+                        <input type="radio" name="paymentMethod" value="online" required/>
+                        <label>&nbsp;&nbsp;&nbsp;hotovosť&nbsp;</label>
+                        <input type="radio" name="paymentMethod" value="cash" required/>
+                    </div>
+                    <br/>
+                    <button type="submit" className="btn btn-primary">Odoslať</button>
+                </div>
                 </Dropdown.Menu>
             </Dropdown>
+            </form>
             </>) : (
                 <>
                 { usage === 2 ? (
