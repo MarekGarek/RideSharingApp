@@ -17,14 +17,15 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/register', data);
-            if (response.status === 200) { // 20?
-                //nastaviť cookies loged
+            const response = await axios.post('http://localhost:8080/login', data);
+            if (response.status === 200) {
+                console.log("Prihlásenie úspešné");
+                console.log("Cookies:", document.cookie);
             } else {
-                //zly login/heslo
+                console.log("Prihlásenie zlyhalo");
             }
         } catch (err) {
-            //err
+            console.log(err);
         }
     }   
   
