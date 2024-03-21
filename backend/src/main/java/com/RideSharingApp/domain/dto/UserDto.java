@@ -1,5 +1,6 @@
 package com.RideSharingApp.domain.dto;
 
+import com.RideSharingApp.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,6 @@ public class UserDto {
     private String name;
     private String surname;
     private short age;
-    private char isAdmin;
+    private Role role;
     private String aboutMe;
 }

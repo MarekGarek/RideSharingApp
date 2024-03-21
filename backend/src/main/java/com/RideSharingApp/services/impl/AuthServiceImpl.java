@@ -1,67 +1,63 @@
 package com.RideSharingApp.services.impl;
 
+import com.RideSharingApp.config.jwt.JwtService;
+import com.RideSharingApp.controllers.AuthenticationResponse;
+import com.RideSharingApp.domain.Role;
 import com.RideSharingApp.domain.dto.UserLoginDto;
 import com.RideSharingApp.domain.entities.UserEntity;
-import com.RideSharingApp.exception.DuplicateLoginException;
 import com.RideSharingApp.repositories.UserRepository;
 import com.RideSharingApp.services.AuthService;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+// upravena trieda
+// https://github.com/ali-bouali/spring-boot-3-jwt-security
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private UserRepository userRepository;
-//    private BCryptPasswordEncoder pwdEncoder = new BCryptPasswordEncoder();
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Override
+    public AuthenticationResponse register(UserEntity userEntity) {
+        userEntity.setRole(Role.USER);
+        String pwd = userEntity.getPassword();
+        userEntity.setPassword(passwordEncoder.encode(pwd));
+
+        userRepository.save(userEntity);
+        return response(userEntity);
     }
 
     @Override
-    public UserEntity save(UserEntity userEntity) {
-        if (userRepository.findById(userEntity.getLogin()).isPresent()) {
-            throw new DuplicateLoginException("Používateľ " + userEntity.getLogin() + " už existuje.");
-        }
-
-        //String pwd = userEntity.getPassword();
-        //userEntity.setPassword(this.hashPassword(pwd));
-        return userRepository.save(userEntity);
+    public AuthenticationResponse authenticate(UserLoginDto request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getLogin(),
+                        request.getPassword()
+                )
+        );
+        var user = userRepository.findById(request.getLogin())
+                .orElseThrow();
+        return response(user);
     }
 
-    @Override
-    public String hashPassword(String password) {
-        //return pwdEncoder.encode(password);
-        return null;
-    }
-
-    @Override
-    public boolean matchPassword(String password, String encodedPassword) {
-        //return pwdEncoder.matches(password, encodedPassword);
-        return false;
-    }
-
-    @Override
-    public boolean login(UserLoginDto userLoginDto) {
-        String login = userLoginDto.getLogin();
-        String pwd = userLoginDto.getPassword();
-
-        if (login.isEmpty() || pwd.isEmpty()) {
-            return false;
-        }
-
-        Optional<UserEntity> userEntity = userRepository.findById(login);
-        if (userEntity.isEmpty()) {
-            return false;
-        }
-
-        return matchPassword(pwd, userEntity.get().getPassword());
-    }
-
-    @Override
-    public boolean isLogged() {
-        return false;
+    private AuthenticationResponse response(UserEntity userEntity) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", Collections.singletonList(userEntity.getRole()));
+        var jwtToken = jwtService.generateToken(extraClaims, userEntity);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 }

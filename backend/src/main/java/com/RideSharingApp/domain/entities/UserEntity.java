@@ -1,13 +1,17 @@
 package com.RideSharingApp.domain.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.RideSharingApp.domain.Role;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @Column(nullable = false, unique = true, length = 15)
     private String login;
@@ -35,9 +39,40 @@ public class UserEntity {
     @Column(nullable = true)
     private short age;
 
-    @Column(name = "is_admin", nullable = false)
-    private char isAdmin;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     @Column(name = "about_me", nullable = true, length = 1000)
     private String aboutMe;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
