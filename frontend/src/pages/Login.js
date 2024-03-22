@@ -8,6 +8,7 @@ export default function Login() {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, seterrorMessage] = useState('');
     
     let data = {
         login: login,
@@ -17,15 +18,24 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/login', data);
+            const response = await axios.post('http://localhost:8080/auth/authenticate', data);
             if (response.status === 200) {
-                console.log("Prihlásenie úspešné");
-                console.log("Cookies:", document.cookie);
-            } else {
-                console.log("Prihlásenie zlyhalo");
+                seterrorMessage('');
+                console.log(response.data.token);
+                console.log("Uspešne prihlásený...");
             }
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            console.error('Chyba zo servera:', error);
+            if (error.response) {
+                seterrorMessage(error.response.data.token || 'Neznáma chyba');
+                if (error.response.status === 403) {
+                    console.log(errorMessage);
+                } else {
+                    console.log(errorMessage);
+                }
+            } else {
+                console.log('Chyba pri odosielaní dát');
+            }
         }
     }   
   
@@ -38,7 +48,7 @@ export default function Login() {
                 <div className="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div className="card text-white" style={{ borderRadius: '1rem', backgroundColor: '#e3b433ec'}}>
                     <div className="card-body p-5 text-center">
-                        <div className="mb-md-5 mt-md-4 pb-2">
+                        <div className="mb-md-3 mt-md-4 pb-2">
 
                         <h2 className="fw-bold mb-2 text-uppercase">Prihlásiť sa</h2>
                         <p className="text-black-50 mb-5 fw-bold">Zadajte svoje prihlasovacie meno a heslo!</p>
@@ -64,7 +74,7 @@ export default function Login() {
                             />
                             <label className="form-label" htmlFor="typePasswordX">Heslo</label>
                         </div>
-
+                        <p style={{color: '#FFFFFF', backgroundColor: '#D32F2F', borderRadius: '4px'}}>{errorMessage}</p>
                         <button className="btn btn-outline-light btn-floating px-5 login-btn"
                                 type="submit"
                                 onClick= {handleSubmit}> Prihlásiť
@@ -75,15 +85,13 @@ export default function Login() {
                             <a href="#!" className="text-white"><i className="bi bi-twitter"> &nbsp;&nbsp; </i></a>
                             <a href="#!" className="text-white"><i className="bi bi-google"> &nbsp;&nbsp; </i></a>
                         </div>
-
+                        
                         </div>
-
                         <div>
                             <p className="mb-0"> Nemáš účet ? &nbsp;
                                 <a role="button" onClick={() => navigate("/register")} className="text-black-50 fw-bold">Zaregistruj sa!</a>
                             </p>
                         </div>
-
                     </div>
                     </div>
                 </div>

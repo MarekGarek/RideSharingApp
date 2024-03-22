@@ -8,8 +8,12 @@ import com.RideSharingApp.domain.entities.UserEntity;
 import com.RideSharingApp.repositories.UserRepository;
 import com.RideSharingApp.services.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,26 +34,34 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationResponse register(UserEntity userEntity) {
+    public ResponseEntity<AuthenticationResponse> register(UserEntity userEntity) {
+        if(userRepository.findById(userEntity.getLogin()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuthenticationResponse("Používateľ s daným loginom už existuje."));
+        }
+
         userEntity.setRole(Role.USER);
         String pwd = userEntity.getPassword();
         userEntity.setPassword(passwordEncoder.encode(pwd));
 
         userRepository.save(userEntity);
-        return response(userEntity);
+        return ResponseEntity.ok(response(userEntity));
     }
 
     @Override
-    public AuthenticationResponse authenticate(UserLoginDto request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getLogin(),
-                        request.getPassword()
-                )
-        );
-        var user = userRepository.findById(request.getLogin())
-                .orElseThrow();
-        return response(user);
+    public ResponseEntity<AuthenticationResponse> authenticate(UserLoginDto request) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getLogin(),
+                            request.getPassword()
+                    )
+            );
+            var user = userRepository.findById(request.getLogin()).orElseThrow();
+            return ResponseEntity.ok(response(user));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new AuthenticationResponse("Nesprávne meno alebo heslo"));
+        }
     }
 
     private AuthenticationResponse response(UserEntity userEntity) {

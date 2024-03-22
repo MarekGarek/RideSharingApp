@@ -24,11 +24,11 @@ public class AuthController {
     @PostMapping(path = "/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody UserDto userDto) {
         UserEntity userEntity = userMapper.mapFrom(userDto);
-        return ResponseEntity.ok(authService.register(userEntity));
+        return authService.register(userEntity);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody UserLoginDto request) {
-        return ResponseEntity.ok(authService.authenticate(request));
+        return authService.authenticate(request);
     }
 }

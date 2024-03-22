@@ -84,21 +84,24 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/register', data);
-            if (response.status === 201) {
-                toastSucc();
+            const response = await axios.post('http://localhost:8080/auth/register', data);
+            if (response.status === 200) {
+                console.log(response.data.token); // spracovať token
+                toastSucc();                      // nie navigate na login ale rovno prihlásiť asi
                 setReg(true);
-            } else {
-                const errorMessage = response.data ? response.data : 'Neznáma chyba';
-                toastErr(errorMessage);
             }
         } catch (error) {
             console.error('Chyba zo servera:', error);
-            let serverMessage = 'Chyba pri odosielaní dát';
-            if (error.response && error.response.data) {
-                serverMessage = error.response.data || serverMessage;
+            if (error.response) {
+                const errorMessage = error.response.data.token || 'Neznáma chyba';
+                if (error.response.status === 409) {
+                    toastErr(errorMessage);
+                } else {
+                    toastErr(errorMessage);
+                }
+            } else {
+                toastErr('Chyba pri odosielaní dát');
             }
-            toastErr(serverMessage);
         }
     };
    
@@ -113,8 +116,8 @@ export default function Register() {
         <div className="row d-flex justify-content-center align-items-center h-100">
         <div className="col-12 col-md-9 col-lg-7 col-xl-6">
             <div className="card radius-register">
-            <div className="card-body p-5 bg-orange">
-                <h2 className="text-uppercase text-center mb-5 fw-bold white">Vytvor si účet</h2>
+            <div className="card-body p-5 bg-orange pado">
+                <h2 className="text-uppercase text-center mb-3 fw-bold white" style={{paddingTop: '20px'}}>Vytvor si účet</h2>
                 <form onSubmit={handleSubmit}>
                 <div className="form-outline mb-2">
                     <label className="form-label" htmlFor="form3Example1cg">Meno</label>
@@ -165,7 +168,6 @@ export default function Register() {
                         disabled={!validLogin || !validPwd || !validPwd2 || reg ? true : false} >Register
                     </button>
                 </div>
-                <br/>
                 <p className="text-center text-muted mt-4 mb-0 white">Máš už vytvorený účet ? &nbsp;
                     <a role="button" onClick={() => navigate("/login")} className="fw-bold text-black-50">
                         <u>Prihlásiť sa</u>

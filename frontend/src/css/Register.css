@@ -2,11 +2,15 @@ body.register-page {
     background-image: url('../images/bglogin.webp');
     background-position: bottom center;
     padding-top: 10px;
-    padding-bottom: 40px;
+}
+
+.pado {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
 }
 
 .bottom-padding {
-    padding-bottom: 70px;
+    padding-bottom: 10px;
 }
 
 @media (max-width: 600px) {
