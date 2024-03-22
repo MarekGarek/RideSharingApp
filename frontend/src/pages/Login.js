@@ -2,16 +2,18 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from "react";
 import axios from 'axios';
 import '../css/Login.css';
+import AuthContext from '../AuthProvider'
 
 export default function Login() {
     const navigate = useNavigate();
+    const {auth, setAuth, logout, login} = useContext(AuthContext);
 
-    const [login, setLogin] = useState('');
+    const [loginUser, setLoginUser] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, seterrorMessage] = useState('');
     
     let data = {
-        login: login,
+        login: loginUser,
         password: password
     }
 
@@ -21,8 +23,9 @@ export default function Login() {
             const response = await axios.post('http://localhost:8080/auth/authenticate', data);
             if (response.status === 200) {
                 seterrorMessage('');
-                console.log(response.data.token);
-                console.log("Uspešne prihlásený...");
+                setLoginUser('');
+                setPassword('');
+                login(response.data.token);
             }
         } catch (error) {
             console.error('Chyba zo servera:', error);
@@ -40,8 +43,43 @@ export default function Login() {
     }   
   
     return (
-        <> 
+        <>
         <body className="login-page">
+        {auth.isLogged ? 
+        <>
+        <section className="vh-100 gradient-custom">
+            <div className="container py-5 h-100 padding-login">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div className="card text-white" style={{ borderRadius: '1rem', backgroundColor: '#e3b433ec'}}>
+                    <div className="card-body p-5 text-center">
+                        <div className="mb-md-3 mt-md-4 pb-2">
+
+                        <h2 className="fw-bold mb-2 text-uppercase">Si úspešne prihlásený!</h2>
+                        <p className="text-black-50 mb-5 fw-bold">{auth.login}</p>
+                        <p style={{color: '#FFFFFF', backgroundColor: '#D32F2F', borderRadius: '4px'}}>{errorMessage}</p>
+                        <button className="btn btn-outline-light btn-floating px-5 login-btn"
+                                type="submit"
+                                onClick= {logout}> Odhlásiť sa
+                        </button>
+
+                        <div className="d-flex justify-content-center text-center mt-4 pt-1 social-media-login">
+                            <a href="#!" className="text-white"><i className="bi bi-facebook"> &nbsp;&nbsp; </i></a>
+                            <a href="#!" className="text-white"><i className="bi bi-twitter"> &nbsp;&nbsp; </i></a>
+                            <a href="#!" className="text-white"><i className="bi bi-google"> &nbsp;&nbsp; </i></a>
+                        </div>
+                        
+                        </div>
+                        
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+        </> : 
+        <>
+        
         <section className="vh-100 gradient-custom">
             <div className="container py-5 h-100 padding-login">
                 <div className="row d-flex justify-content-center align-items-center h-100">
@@ -57,8 +95,8 @@ export default function Login() {
                             <input type="text"
                                    id="typeEmailX" 
                                    className="form-control form-control-lg" 
-                                   onChange={(e) => setLogin(e.target.value)}
-                                   value={login}
+                                   onChange={(e) => setLoginUser(e.target.value)}
+                                   value={loginUser}
                                    required
                             />
                             <label className="form-label" htmlFor="typeEmailX">Login</label>
@@ -98,7 +136,9 @@ export default function Login() {
                 </div>
             </div>
         </section>
-        </body>
+        </>
+        }
+        </body> 
         </>
     )
 }

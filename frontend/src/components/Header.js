@@ -2,10 +2,13 @@ import '../css/Header.css';
 import logo from '../images/logo2.webp';
 import DropdownMenu from './DropdownMenu.js';
 import NavLinks from './NavLinks.js';
-import  { useNavigate } from 'react-router-dom'
+import  { useNavigate } from 'react-router-dom';
+import {useContext} from 'react';
+import AuthContext from '../AuthProvider'
 
 export default function Header() {
     const navigate = useNavigate();
+    const {auth} = useContext(AuthContext);
     
     return(
         <>
@@ -21,7 +24,9 @@ export default function Header() {
             </div>
 
             <div className="drop-down-menu">
+                { auth.isLogged ?
                 <button onClick={() => {navigate("chats")}} className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Chats</button>
+                : <></>}
                 <DropdownMenu />
             </div>
         </header>

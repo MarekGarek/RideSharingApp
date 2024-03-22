@@ -4,14 +4,17 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../css/Cars.css';
+import {useContext} from 'react';
+import AuthContext from '../AuthProvider'
 
-export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onDelete,dummy}) {
+export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onDelete}) {
+    const {auth} = useContext(AuthContext);
     const [editMode, setEditMode] = useState(edit);
     const widthClass = !hide ? "" : "special-width";
 
     const [unchanedIdCar, setUnchangedIdCar] = useState(car ? car.idCar : '');
     const [idCar, setIdCar] = useState(car ? car.idCar : '');
-    const [owner, setOwner] = useState('Marek14');
+    const [owner, setOwner] = useState(auth.login);
     const [model, setModel ] = useState(car ? car.model : '');
     const [seats, setSeats] = useState(car ? car.seats : '');
     const [stk, setStk] = useState('');
@@ -102,12 +105,14 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
         return formData;
     }
 
+    const jwtToken = localStorage.getItem('jwtToken');
     const postData = async () => {
         try {
             const formData = createFormData();
             const response = await axios.post('http://localhost:8080/cars', formData, {
                 headers: { 
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${jwtToken}`
                 }
             });
             if (response.status == 201) {
@@ -126,12 +131,16 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
           }
     };
 
+   
     const putData = async () => {
         try {
+            console.log("Halo");
+            console.log(jwtToken);
             const formData = createFormData();
             const response = await axios.put(`http://localhost:8080/cars/${unchanedIdCar}`, formData, {
                 headers: { 
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${jwtToken}`
                 }
             });
     

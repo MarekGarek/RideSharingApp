@@ -13,13 +13,20 @@ export default function Review({date,user,title,text,recommendation,stars,rev,id
     const handleDelete = () => {
     onDelete(id);
     handleClose();
-  };
+    };
 
     let background = "";
     if (recommendation == 1) {
         background = "greenBG";
     } else if(recommendation == 0) {
         background = "redBG";
+    }
+
+    const parseDate = (date) => {
+        const [datePart] = date.split('T');
+        const [year, month, day] = datePart.split('.');
+        const formattedDate = `${day}.${month}.${year}`;
+        return formattedDate;
     }
 
     function drawStars(stars) {
@@ -85,7 +92,7 @@ export default function Review({date,user,title,text,recommendation,stars,rev,id
             }
             
             <div className={`user ${background}`}>{rev} {user}</div>
-            <div className={`date ${background}`}>{date}</div>
+            <div className={`date ${background}`}>{parseDate(date)}</div>
         </div>
         <br/>
         </>       

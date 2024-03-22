@@ -1,12 +1,14 @@
 import CarComponent from '../components/CarComponent';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import {useContext} from 'react';
+import AuthContext from '../AuthProvider'
 
 export default function Cars() {
-    
+    const {auth} = useContext(AuthContext);
+    const jwtToken = localStorage.getItem('jwtToken');
     const [newCars, setNewCars] = useState([]);
-    const [ mapId, setMapId ] = useState(0);
-    const [ owner, setOwner ] = useState('Marek14'); //TODO: logged user
+    const [ mapId, setMapId ] = useState(0);      
     
     const generateCar = () => {
         const newCar = {
@@ -21,10 +23,14 @@ export default function Cars() {
         setNewCars(newCars.filter(c => c.id !== id));
     };
 
+    
     const [cars, setCars] = useState([]);
     const fetchCars = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/cars', {params: {owner: owner}});
+            const response = await axios.get('http://localhost:8080/cars', {
+            params: { owner: auth.login },
+            headers: { 'Authorization': `Bearer ${jwtToken}` }
+        });
             setCars(response.data);
         } catch (error) {
             console.error(error);
@@ -37,7 +43,11 @@ export default function Cars() {
 
     const handleDelete = async (idCar) => {
         try {
-            await axios.delete(`http://localhost:8080/cars/${idCar}`);
+            await axios.delete(`http://localhost:8080/cars/${idCar}`, {
+                headers: { 
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            });
             fetchCars();
         } catch (error) {
             console.log(error);

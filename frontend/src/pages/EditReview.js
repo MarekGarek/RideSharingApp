@@ -2,16 +2,18 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate,useLocation } from 'react-router-dom';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import {useContext} from 'react';
+import AuthContext from '../AuthProvider'
 
 export default function EditReview(){
     const navigate = useNavigate();
+    const {auth} = useContext(AuthContext);
+    const jwtToken = localStorage.getItem('jwtToken');
     
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
     const reviewer = params.get('reviewer');
-   
-    const author = "Marek14"; //TODO: lognutý autor
 
     const [review, setReview] = useState([]);
     const [title, setTitle] = useState();
@@ -25,7 +27,9 @@ export default function EditReview(){
 
     const fetchReview = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/reviews/${id}`);
+            const response = await axios.get(`http://localhost:8080/reviews/${id}`,{
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+            });
             setReview(response.data);
         } catch (error) {
             console.error(error);
@@ -51,14 +55,14 @@ export default function EditReview(){
         try {
             const response = await axios.post('http://localhost:8080/reviews', 
             {
-                author: author,
+                author: auth.login,
                 reviewer: reviewer,
                 text: text,
                 date: new Date().toISOString(),
                 stars: stars,
                 title: title,
                 recommendation: recommendation
-            });
+            },{ headers: {'Authorization': `Bearer ${jwtToken}`}});
             if (response.status == 201) {
                 toastSucc("/profile/written-reviews");
                 setSubmited(true);
@@ -84,7 +88,7 @@ export default function EditReview(){
                 stars: stars,
                 title: title,
                 recommendation: recommendation    
-            });
+            },{headers: { 'Authorization': `Bearer ${jwtToken}`}});
             if (response.status == 200) {
                 toastSucc("/profile/written-reviews");
                 setSubmited(true);
