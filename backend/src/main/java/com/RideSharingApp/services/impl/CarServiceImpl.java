@@ -32,7 +32,7 @@ public class CarServiceImpl implements CarService {
         carEntity.setStk(stkDate);
 
         if(file != null && !file.isEmpty()) {
-            String imgPath = fileService.saveFile(file, carEntity.getIdCar());
+            String imgPath = fileService.saveFile(file, carEntity.getIdCar(),"CAR");
             carEntity.setImg(imgPath);
         }
 
@@ -69,7 +69,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deleteImg(String fileName) throws IOException {
         if (fileName != null && !fileName.isEmpty()) {
-            fileService.deleteFile(fileName);
+            fileService.deleteFile(fileName,"CAR");
         }
     }
 
@@ -103,7 +103,7 @@ public class CarServiceImpl implements CarService {
                 this.delete(unchangedIdCar);
             } else if(unchangedIdCarImg != null) {
                 this.deleteCarEntity(unchangedIdCar);
-                String newName = fileService.renameFile(unchangedIdCarImg, carEntity.getIdCar());
+                String newName = fileService.renameFile(unchangedIdCarImg, carEntity.getIdCar(),"CAR");
                 carEntity.setImg(newName);
             } else {
                 this.deleteCarEntity(unchangedIdCar);

@@ -24,7 +24,7 @@ export default function ReviewsAboutMe() {
 
     useEffect(() => {
         fetchItems();
-    }, []);
+    }, [auth.login, jwtToken]);
 
     return(
         <>

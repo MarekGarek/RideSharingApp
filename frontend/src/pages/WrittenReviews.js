@@ -24,7 +24,7 @@ export default function WrittenReviews() {
 
     useEffect(() => {
         fetchItems();
-    }, []);
+    }, [auth.login, jwtToken]);
 
     const handleDelete = async (id) => {
         try {

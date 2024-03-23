@@ -148,15 +148,14 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
                 setBtn(true);
                 toastSuccP('Údaje boli aktualizované.');
             } else {
-                // Možno by ste chceli ošetriť iné status kódy alebo situáciu, keď response nie je definovaný
                 toastErr('Neznáma chyba'); 
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
-                toastErr("Konflikt..."); // Specifická správa pre chybový status 409
+                toastErr("Konflikt...");
             } else {
                 console.error(error);
-                toastErr(error.message || 'Došlo k chybe'); // Zobrazíme error.message, ak existuje, inak generickú správu
+                toastErr(error.message || 'Došlo k chybe');
             }
         }
     };

@@ -1,7 +1,7 @@
 package com.RideSharingApp.services.impl;
 
 import com.RideSharingApp.config.jwt.JwtService;
-import com.RideSharingApp.controllers.AuthenticationResponse;
+import com.RideSharingApp.domain.AuthenticationResponse;
 import com.RideSharingApp.domain.Role;
 import com.RideSharingApp.domain.dto.UserLoginDto;
 import com.RideSharingApp.domain.entities.UserEntity;

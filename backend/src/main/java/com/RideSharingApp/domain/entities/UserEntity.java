@@ -46,6 +46,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "about_me", nullable = true, length = 1000)
     private String aboutMe;
 
+    @Column(nullable = true, length = 1000)
+    private String img;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

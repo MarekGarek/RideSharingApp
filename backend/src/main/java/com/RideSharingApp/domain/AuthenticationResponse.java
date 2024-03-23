@@ -1,4 +1,4 @@
-package com.RideSharingApp.controllers;
+package com.RideSharingApp.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

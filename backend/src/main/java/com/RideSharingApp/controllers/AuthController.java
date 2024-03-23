@@ -1,5 +1,6 @@
 package com.RideSharingApp.controllers;
 
+import com.RideSharingApp.domain.AuthenticationResponse;
 import com.RideSharingApp.domain.dto.UserDto;
 import com.RideSharingApp.domain.dto.UserLoginDto;
 import com.RideSharingApp.domain.entities.UserEntity;

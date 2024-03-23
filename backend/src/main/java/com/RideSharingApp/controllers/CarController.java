@@ -45,7 +45,6 @@ public class CarController {
                                             @RequestParam("modelYear") short modelYear, @RequestParam("trunkSpace") short trunkSpace,
                                             @RequestParam("idCar") String idCar, @PathVariable("unchangedIdCar") String unchangedIdCar,
                                             @RequestParam(value = "file", required = false) MultipartFile file) throws ParseException, IOException {
-        //if (carService.isExists(idCar)) {return new ResponseEntity<>(HttpStatus.CONFLICT);}
         CarDto carDto = new CarDto(idCar,owner,model,null,seats,modelYear,trunkSpace,null);
         CarEntity carEntity = carMapper.mapFrom(carDto);
         CarEntity savedCarEntity = carService.update(carEntity, file, stk, unchangedIdCar);

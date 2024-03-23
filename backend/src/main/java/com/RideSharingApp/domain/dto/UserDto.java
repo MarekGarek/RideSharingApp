@@ -19,4 +19,5 @@ public class UserDto {
     private short age;
     private Role role;
     private String aboutMe;
+    private String img;
 }

@@ -39,7 +39,7 @@ export default function Cars() {
 
     useEffect(() => {
         fetchCars();
-    }, []);
+    }, [auth.login, jwtToken]);
 
     const handleDelete = async (idCar) => {
         try {

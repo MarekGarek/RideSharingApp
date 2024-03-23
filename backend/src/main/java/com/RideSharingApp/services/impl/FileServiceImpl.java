@@ -13,15 +13,26 @@ import java.nio.file.Paths;
 public class FileServiceImpl implements FileService {
 
     private static final String CAR_IMAGE_DIRECTORY = "C:\\Users\\garek\\RideSharingApp\\images\\car-images\\";
+    private static final String USER_IMAGE_DIRECTORY = "C:\\Users\\garek\\RideSharingApp\\images\\user-images\\";
+
+    private String getDirectoryPath(String directory) {
+        if ("CAR".equals(directory)) {
+            return CAR_IMAGE_DIRECTORY;
+        } else if ("USER".equals(directory)) {
+            return USER_IMAGE_DIRECTORY;
+        } else {
+            throw new IllegalArgumentException("Invalid directory type: " + directory);
+        }
+    }
 
     @Override
-    public String saveFile(MultipartFile file, String idCar) throws IOException {
+    public String saveFile(MultipartFile file, String idCar, String directory) throws IOException {
         String fileName = null;
         if (file != null && !file.isEmpty()) {
             String originalFileName = file.getOriginalFilename();
             String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
             fileName = idCar + extension;
-            Path path = Paths.get(CAR_IMAGE_DIRECTORY + fileName);
+            Path path = Paths.get(getDirectoryPath(directory) + fileName);
             try {
                 Files.copy(file.getInputStream(), path);
             } catch (IOException e) {
@@ -32,8 +43,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteFile(String fileName) throws IOException {
-        Path path = Paths.get(CAR_IMAGE_DIRECTORY + fileName);
+    public void deleteFile(String fileName, String directory) throws IOException {
+        Path path = Paths.get(getDirectoryPath(directory) + fileName);
         if (Files.exists(path)) {
             try {
                 Files.delete(path);
@@ -46,7 +57,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public String renameFile(String oldName, String newName) throws IOException {
+    public String renameFile(String oldName, String newName, String directory) throws IOException {
         String extension = "";
         int lastIndexOfDot = oldName.lastIndexOf(".");
         if (lastIndexOfDot >= 0) {
@@ -55,14 +66,13 @@ public class FileServiceImpl implements FileService {
 
         newName += extension;
 
-        Path source = Paths.get(CAR_IMAGE_DIRECTORY + oldName);
+        Path source = Paths.get(getDirectoryPath(directory) + oldName);
         if (Files.exists(source)) {
-            Path target = Paths.get(CAR_IMAGE_DIRECTORY + newName);
+            Path target = Paths.get(getDirectoryPath(directory) + newName);
             Files.move(source, target);
             return newName;
         } else {
             throw new IOException("File " + oldName + " not found.");
         }
     }
-
 }
