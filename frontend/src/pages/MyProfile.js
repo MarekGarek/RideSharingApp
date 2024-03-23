@@ -18,7 +18,6 @@ export default function MyProfile() {
             headers: { 'Authorization': `Bearer ${jwtToken}` }
         });
             setInfo(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error(error);
         }

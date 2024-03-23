@@ -1,6 +1,7 @@
 package com.RideSharingApp.controllers;
 
 import com.RideSharingApp.domain.dto.CarDto;
+import com.RideSharingApp.domain.dto.PasswordChangeDto;
 import com.RideSharingApp.domain.dto.UserDto;
 import com.RideSharingApp.domain.dto.UserProfileUpdateDto;
 import com.RideSharingApp.domain.entities.CarEntity;
@@ -39,8 +40,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/info")
-    public UserDto userCars(@RequestParam(name = "user") String user) {
+    public UserDto userInfo(@RequestParam(name = "user") String user) {
         UserEntity userEntity = userService.findUser(user);
         return userMapper.mapTo(userEntity);
+    }
+
+    @PutMapping(path = "/info")
+    public ResponseEntity<String> changePassword(@RequestBody PasswordChangeDto passwordDto) {
+        return userService.changePassword(passwordDto);
     }
 }

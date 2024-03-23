@@ -24,3 +24,7 @@ body.login-page {
 .text-black:hover {
     color: black !important;
 }
+
+.font-color-login{
+    color: black !important;
+}

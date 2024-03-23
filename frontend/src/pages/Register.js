@@ -86,8 +86,7 @@ export default function Register() {
         try {
             const response = await axios.post('http://localhost:8080/auth/register', data);
             if (response.status === 200) {
-                console.log(response.data.token); // spracovať token
-                toastSucc();                      // nie navigate na login ale rovno prihlásiť asi
+                toastSucc();
                 setReg(true);
             }
         } catch (error) {

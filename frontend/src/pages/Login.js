@@ -91,9 +91,8 @@ export default function Login() {
                         <h2 className="fw-bold mb-2 text-uppercase">Prihlásiť sa</h2>
                         <p className="text-black-50 mb-5 fw-bold">Zadajte svoje prihlasovacie meno a heslo!</p>
 
-                        <div className="form-outline form-white mb-4">
+                        <div className="form-outline form-white mb-4 font-color-login">
                             <input type="text"
-                                   id="typeEmailX" 
                                    className="form-control form-control-lg" 
                                    onChange={(e) => setLoginUser(e.target.value)}
                                    value={loginUser}
@@ -104,7 +103,6 @@ export default function Login() {
 
                         <div className="form-outline form-white mb-4">
                             <input type="password" 
-                                   id="typePasswordX" 
                                    className="form-control form-control-lg text-black"
                                    onChange={(e) => setPassword(e.target.value)}
                                    value={password}
