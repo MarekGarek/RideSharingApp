@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends CrudRepository<ReviewEntity, Integer> {
-    List<ReviewEntity> findByAuthor_Login(String login); //JPA by malo podla nazvu vygenerovat SELECT len z názvu
+    List<ReviewEntity> findByAuthor_Login(String login);
     List<ReviewEntity> findByReviewer_Login(String login);
 }

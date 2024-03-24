@@ -1,10 +1,19 @@
 import '../css/CreateRide.css';
-import { useEffect, useState, useRef } from "react";
+import {useContext, useEffect, useState, useRef } from "react";
+import axios from 'axios';
+import AuthContext from '../AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 
 export default function CreateRide() {
+    const navigate = useNavigate();
+    const {auth} = useContext(AuthContext);
+    const jwtToken = localStorage.getItem('jwtToken');
+    const [cars, setCars] = useState([]);
 
-    const [autor, setAutor] = useState('Marek14');
+    const [autor, setAutor] = useState();
+    const [car, setCar] = useState("");
     const [date, setDate] = useState('');
     const [srcTown, setSrcTown] = useState('');
     const [dstTown, setDstTown] = useState('');
@@ -14,10 +23,107 @@ export default function CreateRide() {
     const [trunk, setTrunk] = useState('');
     const [price, setPrice] = useState('');
     const [info, setInfo] = useState('');
+    
+    const fetchCars = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/cars', {
+            params: { owner: auth.login },
+            headers: { 'Authorization': `Bearer ${jwtToken}` }
+        });
+            return setCars(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
+    const [renderForm, setRenderForm] = useState(false);
+    
+    useEffect(() => {
+        fetchCars();
+    }, [auth.login, jwtToken]);
+    
+    useEffect(() => {
+        if (cars.length > 0) {
+            setRenderForm(true);
+            setAutor(auth.login);
+        } else {
+            setRenderForm(false);
+        }
+    }, [cars]);
+    
+    const toastSucc = () => {
+        toast.success('Nová jazda bola úspešne vytvorená!', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+          onClose: () => navigate("/profile/current-ride")
+        });
+    };
+
+    const toastErr = (err) => {
+        toast.error(err, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+            });
+        }
+
+    const modelCar = cars.find(c => c.model === car);
+
+    const data = modelCar ? {
+        driver: autor,
+        car: modelCar.idCar,
+        date: date,
+        srcTown: srcTown,
+        dstTown: dstTown,
+        srcTime: srcTime,
+        dstTime: dstTime,
+        seats: seats,
+        trunkSpace: trunk,
+        price: price,
+        info: info
+    } : null;
+
+    const postData = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/trip', data,
+            { headers: {'Authorization': `Bearer ${jwtToken}`}});
+            if (response.status == 201) {
+                toastSucc();
+            } else {
+                toastErr(response.status);
+            }
+            
+          } catch (error) {
+            console.error(error);
+            toastErr(error.code);
+          }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+//        if (id) {
+//            putData();
+//        } else {
+            postData();
+//        }
+    };
 
     return(
         <>
+        <ToastContainer/>
         <div className="grid-my-profile-heading">
             <div className="grid-my-profile-heading-h1"> 
                 <h1>Vytvor novú jazdu </h1>
@@ -26,9 +132,17 @@ export default function CreateRide() {
             </div>
         </div>
         <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
-
+        {!renderForm ? 
+        <>
+            <h4>Na vytváranie ciest potrebuješ mať pridané auto.</h4>
+            <h5>Môžeš tak urobiť v sekcii "Moje autá" alebo klikni 
+                <a style={{fontWeight: 'bold'}} type="button" onClick={() => {navigate("/profile/cars")}}>&nbsp; tu!</a>
+            </h5> 
+        </> : 
+        <>
+        <form onSubmit={handleSubmit}>
         <div className="history-trip-center">        
-        <div className="grid-tripc">
+        <div className="grid-tripc" style={{backgroundColor: 'rgba(250, 222, 11, 0.808)'}}>
             <div className="grid-tripc-author">
                 <p>
                     <div>
@@ -48,8 +162,8 @@ export default function CreateRide() {
                         <a className="label-trpc">Dátum cesty: </a> 
                     </div>
                     <div>
-                        <input type='date' className="long-inputs" required
-                               onChange={(e)=>{setDate(e.target.value)}}/>
+                        <input type='date' className="long-inputs form-control" required
+                               onChange={(e)=>{setDate(e.target.value)}} value={date}/>
                     </div>
                 </p>
             </div>
@@ -62,16 +176,16 @@ export default function CreateRide() {
                     </div>
                     <div className="grid-towns">
                         <div className="grid-towns-A">
-                            <input type="text" className="long-inputs" required min="3" max="45"
-                                   onChange={(e)=>{setSrcTown(e.target.value)}}/>
-                            <input type="time" className="time-inputs" required
-                                   onChange={(e)=>{setSrcTime(e.target.value)}}/>
+                            <input type="text" className="long-inputs form-control" required min="3" max="45" style={{ marginBottom: '3px'}}
+                                   onChange={(e)=>{setSrcTown(e.target.value)}} value={srcTown}/>
+                            <input type="time" className="long-inputs form-control" required
+                                   onChange={(e)=>{setSrcTime(e.target.value)}} value={srcTime}/>
                         </div>
                         <div className="grid-towns-B">
-                            <input type="text" className="long-inputs" required min="3" max="45"
-                                   onChange={(e)=>{setDstTown(e.target.value)}}/>
-                            <input type="time" className="time-inputs" required
-                                   onChange={(e)=>{setDstTime(e.target.value)}}/>
+                            <input type="text" className="long-inputs form-control" required min="3" max="45" style={{ marginBottom: '3px'}}
+                                   onChange={(e)=>{setDstTown(e.target.value)}} value={dstTown}/>
+                            <input type="time" className="long-inputs form-control" required
+                                   onChange={(e)=>{setDstTime(e.target.value)}} value={dstTime}/>
                         </div>
                     </div>
                 </p>
@@ -80,8 +194,8 @@ export default function CreateRide() {
 
             <div className="grid-tripc-info">
                 <a className="label-trpc">Dodatočné info: </a><br/>
-                <textarea id="text" name="text" rows="4" cols="60" placeholder="Zadejte text..." className="textarea-input"
-                            required max="2000" onChange={(e)=>{setInfo(e.target.value)}}/>
+                <textarea id="text" name="text" rows="4" cols="60" placeholder="Zadejte text..." className="textarea-input form-control"
+                            required max="2000" onChange={(e)=>{setInfo(e.target.value)}} value={info}/>
             </div>
 
             <div className="grid-tripc-car">
@@ -90,11 +204,13 @@ export default function CreateRide() {
                         <a className="label-trpc">Auto: </a> 
                     </div>
                     <div>
-                        <select className="long-inputs">
-                            <option>Mazda 3</option>
-                            <option>Peugeot 207</option>
+                        <select className="long-inputs form-control" value={car} onChange={(e)=>{setCar(e.target.value)}} required>
+                        <option disabled={true}></option>
+                        {cars.map((car) => (
+                            <option value={car.model} id={car.idCar}>{car.model}</option>
+                        ))}
                         </select>
-                    </div> 
+                    </div>
                     <hr class="featurette-divider"></hr>
                 </p>
             </div>
@@ -105,19 +221,19 @@ export default function CreateRide() {
                         <a className="label-trpc">Voľné miesta: </a>
                     </div>
                     <div>
-                        <input type='number'className="long-inputs" min="1" max="4" /* poc miest auta-1 */
-                               onChange={(e)=>{setSeats(e.target.value)}} />  
+                        <input type='number'className="long-inputs form-control" min="1" max="4" required
+                               onChange={(e)=>{setSeats(e.target.value)}} value={seats}/>  
                     </div>
                 </p>
             </div>
 
-            <div className="grid-tripc-price">
+            <div className="grid-tripc-price create-trip-al">
                 <p>
                     <div>
                         <a className="label-trpc">Voľná kapacita: </a>
                     </div>
                     <div>
-                        <input type='number'className="long-inputs" required
+                        <input type='number'className="long-inputs form-control" required
                                onChange={(e)=>{setTrunk(e.target.value)}}/>
                     </div>
                 </p>
@@ -129,16 +245,18 @@ export default function CreateRide() {
                         <a className="label-trpc">Cena: €</a> 
                     </div>
                     <div>
-                        <input type='number' className="long-inputs" step="0.2" required max="999"
+                        <input type='number' className="long-inputs form-control" step="0.2" required max="999"
                                onChange={(e)=>{setPrice(e.target.value)}}/>
                     </div>
             </div>
 
             <div className="grid-tripc-more" style={{textAlign: 'right'}}>
-                <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" >Vytvoriť</button>
+                <button type="submit" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" >Vytvoriť</button>
             </div>
         </div>
         </div>
+        </form>
+        </>}
         </>
     )
 }
