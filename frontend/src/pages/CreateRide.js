@@ -112,7 +112,7 @@ export default function CreateRide() {
         <>
         <form onSubmit={handleSubmit}>
         <div className="history-trip-center">        
-        <div className="grid-tripc" style={{backgroundColor: 'rgba(250, 222, 11, 0.808)'}}>
+        <div className="grid-tripc" style={{backgroundColor: 'rgba(246, 224, 60, 0.81)'}}>
             <div className="grid-tripc-author">
                 <p>
                     <div>
@@ -141,7 +141,7 @@ export default function CreateRide() {
             <div className="grid-tripc-towns">
                 <p>
                     <div className="grid-towns">
-                        <div className="grid-towns-A"><a className="label-trpc">Odkial:</a></div>
+                        <div className="grid-towns-A"><a className="label-trpc">Odkiaľ:</a></div>
                         <div className="grid-towns-B"><a className="label-trpc">Kam: </a></div>
                     </div>
                     <div className="grid-towns">
@@ -163,7 +163,7 @@ export default function CreateRide() {
             </div>
 
             <div className="grid-tripc-info">
-                <a className="label-trpc">Dodatočné info: </a><br/>
+                <a className="label-trpc">Dodatočné informácie: </a><br/>
                 <textarea id="text" name="text" rows="4" cols="60" placeholder="Zadejte text..." className="textarea-input form-control"
                             required max="2000" onChange={(e)=>{setInfo(e.target.value)}} value={info}/>
             </div>

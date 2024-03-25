@@ -1,12 +1,32 @@
 import TripComponent from '../components/TripComponent';
-import MyToasts, { useToast} from '../components/MyToasts';
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import {useContext} from 'react';
+import AuthContext from '../AuthProvider';
 
 export default function RideHistory() {
-    const showToast = useToast();
+    const {auth} = useContext(AuthContext);
+    const jwtToken = localStorage.getItem('jwtToken');
+
+    const [trips, setTrips] = useState([]);
+    const fetchItems = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/history-trips', {
+                params: { user: auth.login },
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+            });
+            setTrips(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchItems();
+    }, [auth.login, jwtToken]);
 
     return(
         <>
-        <MyToasts />
         <div className="grid-my-profile-heading">
             <div className="grid-my-profile-heading-h1"> 
                 <h1>História jázd</h1>
@@ -14,10 +34,17 @@ export default function RideHistory() {
         </div>
         <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <div className="history-trip-center">
-            <TripComponent usage={2}/>
-            <TripComponent usage={2} bg="#f7f7f7"/>
-            <TripComponent usage={2}/>
+        {
+            trips.map((trip, index) => (
+                <TripComponent 
+                    data={trip} 
+                    usage={2} 
+                    bg={index % 2 === 0 ? 'white' : 'rgba(246, 224, 60, 0.81)'}
+                />
+            ))
+        }
         </div>
+        
         </>
     )
 }

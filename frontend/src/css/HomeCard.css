@@ -9,13 +9,18 @@
       'picture1  text1  text2  picture2 ';
     gap: 20px;
     padding: 10px;
-    max-width: 1100px;
+    max-width: 1050px;
     margin: 0 auto;
+}
+
+.home-header {
+    font-weight: 600;
 }
 
 .home-card-img {
     width: 300px;
     height: auto;
+    border-radius: 15px;
 }
 
 .home-card-item1 {
@@ -25,6 +30,12 @@
 
 .home-card-item3 {
     text-align: right;
+    font-family: cursive;
+    font-size: 17px;
+}
+
+.home-card-item2 {
+    font-family: cursive;
 }
 
 @media (max-width: 768px) {

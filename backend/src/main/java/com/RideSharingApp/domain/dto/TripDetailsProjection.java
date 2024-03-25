@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public interface TripDetailsProjection {
-    int getIdTrip();
+    Integer getIdTrip();
     String getDriver();
     String getCar();
     Date getDate();
@@ -12,11 +12,11 @@ public interface TripDetailsProjection {
     String getDstTown();
     LocalTime getSrcTime();
     LocalTime getDstTime();
-    byte getSeats();
-    short getTrunkSpace();
-    float getPrice();
+    Byte getSeats();
+    Short getTrunkSpace();
+    Float getPrice();
     String getInfo();
     String getModel();
-    byte getReservedSeats();
-    short getReservedTrunk();
+    Byte getReservedSeats();
+    Short getReservedTrunk();
 }

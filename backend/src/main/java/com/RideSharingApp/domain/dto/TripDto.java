@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @Builder
 public class TripDto {
-    private int idReview;
+    private int idTrip;
     private String driver;
     private String car;
     private Date date;

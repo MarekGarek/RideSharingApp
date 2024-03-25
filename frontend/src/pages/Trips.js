@@ -8,7 +8,7 @@ export default function Trips() {
             <span className="slogan">Vyhľadaj cestu : </span>
         </p>
 
-        <div className="grid-trip">
+        <div className="grid-trip" style={{backgroundColor: 'white'}}>
             <div className="grid-trip-switch">
                 <i role="button" class="bi bi-arrow-down-up" style={{fontSize: '25px'}}></i>
             </div>

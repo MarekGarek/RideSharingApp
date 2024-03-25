@@ -138,7 +138,7 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
     return(
         <>
         <MyToasts />
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{backgroundColor: 'white'}}>
         {!hide ? (
         <>
         <br/>

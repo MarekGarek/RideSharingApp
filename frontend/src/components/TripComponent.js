@@ -1,11 +1,25 @@
 import '../css/TripComponent.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import {useContext} from 'react';
+import AuthContext from '../AuthProvider';
 
-export default function TripComponent({bg, usage}) {
+export default function TripComponent({bg, usage, data}) {
     const navigate = useNavigate();
+    const {auth} = useContext(AuthContext);
 
-    const autor="Test1";
+    const [srcTime, setSrcTime] = useState();
+    const [dstTime, setDstTime] = useState();
+    const [date, setDate] = useState();
+
+    useEffect(() => {
+        setSrcTime(data?.srcTime.slice(0,5))
+        setDstTime(data?.dstTime.slice(0,5))
+        const date = new Date(data?.date);
+        const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+        setDate(formattedDate);
+    }, []);
 
     return(
         <>
@@ -16,7 +30,7 @@ export default function TripComponent({bg, usage}) {
                         <a className="label-trpc">Šofér:</a> 
                     </div>
                     <div>
-                        <a className="label-var">{autor}</a>
+                        <a className="label-var">{data?.driver}</a>
                     </div>
                 </p>
                 <hr class="featurette-divider"></hr>
@@ -29,7 +43,7 @@ export default function TripComponent({bg, usage}) {
                         <a className="label-trpc">Dátum cesty: </a> 
                     </div>
                     <div>
-                        <a className="label-var">12.4.2024</a>
+                        <a className="label-var">{date}</a>
                     </div>
                 </p>
             </div>
@@ -37,17 +51,17 @@ export default function TripComponent({bg, usage}) {
             <div className="grid-tripc-towns">
                 <p>
                     <div className="grid-towns">
-                        <div className="grid-towns-A"><a className="label-trpc">Odkial:</a></div>
+                        <div className="grid-towns-A"><a className="label-trpc">Odkiaľ:</a></div>
                         <div className="grid-towns-B"><a className="label-trpc">Kam: </a></div>
                     </div>
                     <div className="grid-towns">
                         <div className="grid-towns-A">
-                            <a className="label-var">Žilina </a>
-                            <a className="label-time"> 14:30</a>
+                            <a className="label-var">{data?.srcTown} </a>
+                            <a className="label-time"> {srcTime}</a>
                         </div>
                         <div className="grid-towns-B">
-                            <a className="label-var">Trstená </a>
-                            <a className="label-time"> 16:00</a>
+                            <a className="label-var">{data?.dstTown} </a>
+                            <a className="label-time"> {dstTime}</a>
                         </div>
                         
                        
@@ -57,9 +71,8 @@ export default function TripComponent({bg, usage}) {
             </div>
 
             <div className="grid-tripc-info">
-                <a className="label-trpc">Dodatočné info: </a> 
-                <p className="p-info-trip" style={{fontFamily: 'cursive'}}>Zo Žiliny odchádzam z internátov Veľký diel. 
-                Viem sa prispôsobiť a ísť o 1-2h neskôr v prípade záujmu. Teším sa na spoločnú cestu. Pekný deň.</p>
+                <a className="label-trpc">Dodatočné informácie: </a> 
+                <p className="p-info-trip" style={{fontFamily: 'cursive'}}>{data?.info}</p>
             </div>
 
             <div className="grid-tripc-car">
@@ -68,7 +81,7 @@ export default function TripComponent({bg, usage}) {
                         <a className="label-trpc">Auto: </a> 
                     </div>
                     <div>
-                        <a className="label-var">Mazda 3</a>
+                        <a className="label-var">{data?.model}</a>
                     </div> 
                     <hr class="featurette-divider"></hr>
                 </p>
@@ -80,7 +93,7 @@ export default function TripComponent({bg, usage}) {
                         <a className="label-trpc">Miesta &nbsp;a&nbsp; kapacita: </a>
                     </div>
                     <div>
-                        <a className="label-var">3/5 &nbsp;&nbsp; 120/350l</a>    
+                        <a className="label-var">{data?.reservedSeats}/{data?.seats} &nbsp;&nbsp; {data?.reservedTrunk}/{data?.trunkSpace}l</a>    
                     </div>
                 </p>
             </div>
@@ -91,7 +104,7 @@ export default function TripComponent({bg, usage}) {
                         <a className="label-trpc">Cena: </a> 
                     </div>
                     <div>
-                        <a className="label-var">9,99</a>
+                        <a className="label-var">{data?.price}</a>
                     </div>
                 </p>
                 <hr class="featurette-divider media-q"></hr>
@@ -129,10 +142,10 @@ export default function TripComponent({bg, usage}) {
             </form>
             </>) : (
                 <>
-                { usage === 2 ? (
+                { usage === 2 ? (auth && auth.login !== data.driver &&(
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
-                    onClick={() => {navigate(`/profile/edit-review?reviewer=${autor}`)}}>Napíš recenziu</button>
-                ) : (
+                    onClick={() => {navigate(`/profile/edit-review?reviewer=${data?.driver}`)}}>Napíš recenziu</button>
+                )) : (
                     <>  {/* TODO : Dalsi if lognuty user je tvorca cesty, vtedy ju moze zrusit / editnut*/}
                         <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
                     </>

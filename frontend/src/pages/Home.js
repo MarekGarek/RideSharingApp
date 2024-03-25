@@ -24,7 +24,7 @@ export default function Home() {
             </p>
         </div>
         
-        <hr class="featurette-divider"></hr>
+        <hr class="featurette-divider" style={{color: 'rgba(250, 222, 11, 0.808)', borderWidth: '4px'}}></hr>
         <section id="homesection">
         <HomeCard
         header1="Bezpečnosť a jednoduchosť"
@@ -33,11 +33,11 @@ export default function Home() {
         Naša platforma zaručuje bezpečné a jednoduché plánovanie vašich ciest, čím šetrí váš čas aj energiu."
         pic1={safe}
         header2="Lacno a rýchlo"
-        text2="Cestovanie nemusí byť drahé ani zdĺhavé.Zdieľajte jazdu s ostatnými a rozdeľte sa o náklady 
+        text2="Cestovanie nemusí byť drahé ani zdĺhavé. Zdieľajte jazdu s ostatnými a rozdeľte sa o náklady 
         a zároveň získajte efektívny spôsob, ako sa dostať tam, kde potrebujete."
         pic2={fast}/>
 
-        <hr class="featurette-divider"></hr>
+        <hr class="featurette-divider" style={{color: 'rgba(250, 222, 11, 0.808)', borderWidth: '4px'}}></hr>
 
         <HomeCard
         header1="Na čas a bez prestupov"
