@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
-import '../css/Register.css';
 import { useEffect, useState, useRef } from "react";
+import MyToasts, { useToast} from '../components/MyToasts';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import '../css/Register.css';
 
 const LOGIN_REGEX = /^[a-zA-Z][a-zA-Z0-9]{4,20}$/;              // [zacina] [obsahuje] {rozsah/dlzka}
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{4,20}$/; // musí obsahovať jedno male,velke pismeno a cislo
@@ -11,60 +10,25 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{4,20}$/; // musí obsahov
 export default function Register() {   
     const navigate = useNavigate();
     const loginRef = useRef();
+    const showToast = useToast();
 
     const [name, setName] = useState('');
     const [surName, setSurName] = useState('');
     const [email, setEmail] = useState('');
-
     const [login, setLogin] = useState('');
     const [validLogin, setValidLogin] = useState(false);
-    
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
-    
     const [pwd2, setPwd2] = useState('');
     const [validPwd2, setValidPwd2] = useState(false);
 
     const [reg, setReg] = useState(false);
 
-    const toastSucc = () => {
-        toast.success('Registrácia prebehla úspešne!', {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: () => navigate("/login")
-        });
-      };
-
-      const toastErr = (err) => {
-        toast.error(err, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-            });
-      }
-
-
-
-    //skontrolujem ci login obsahuje vsetky znaky ktore ma podla regexu
     useEffect(() => {
         const result = LOGIN_REGEX.test(login);
         setValidLogin(result);
     },[login])
 
-    //to iste s heslami
     useEffect(() => {
         const result = PWD_REGEX.test(pwd);
         setValidPwd(result);
@@ -86,29 +50,25 @@ export default function Register() {
         try {
             const response = await axios.post('http://localhost:8080/auth/register', data);
             if (response.status === 200) {
-                toastSucc();
+                showToast('success', 'Registrácia prebehla úspešne!', '/login');
                 setReg(true);
             }
         } catch (error) {
             console.error('Chyba zo servera:', error);
             if (error.response) {
                 const errorMessage = error.response.data.token || 'Neznáma chyba';
-                if (error.response.status === 409) {
-                    toastErr(errorMessage);
-                } else {
-                    toastErr(errorMessage);
-                }
+                showToast('error', errorMessage);
             } else {
-                toastErr('Chyba pri odosielaní dát');
+                showToast('error', 'Chyba pri odosielaní dát');
             }
         }
     };
    
     return (
         <>
+        <MyToasts />
         <body className="register-page">
         <div className="bottom-padding">
-        <ToastContainer/>
         <section className="vh-100 bg-image">
         <div className="mask d-flex align-items-center h-100 gradient-custom-3">
         <div className="container h-100">

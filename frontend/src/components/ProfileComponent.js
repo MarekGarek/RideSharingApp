@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import MyToasts, { useToast} from '../components/MyToasts';
 import {useContext} from 'react';
 import AuthContext from '../AuthProvider'
 import axios from 'axios';
@@ -8,6 +8,7 @@ export default function ProfileComponent({hide, info}) {
     const [editMode, setEditMode] = useState(false);
     const jwtToken = localStorage.getItem('jwtToken');
     const {auth} = useContext(AuthContext);
+    const showToast = useToast();
 
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
@@ -32,21 +33,6 @@ export default function ProfileComponent({hide, info}) {
         e.stopPropagation();
         setEditMode(!editMode);
     };
-
-    const toastSuccP = (msg) => {
-        toast.success(msg, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: () => {window.location.reload();}
-        });
-      };
 
     function createFormData() {
         const formData = new FormData();
@@ -73,7 +59,7 @@ export default function ProfileComponent({hide, info}) {
             });
             if (response && response.status === 200) {
                 setBtn(true);
-                toastSuccP('Údaje boli aktualizované.');
+                showToast('success', 'Údaje boli aktualizované.', null, () => {window.location.reload();})
             }
         } catch (error) {
             console.error(error);
@@ -87,7 +73,7 @@ export default function ProfileComponent({hide, info}) {
 
     return (
         <>
-        <ToastContainer/>
+        <MyToasts />
         <form onSubmit={handleSubmit}>
         {!hide ? (
         <>

@@ -1,8 +1,12 @@
 import TripComponent from '../components/TripComponent';
+import MyToasts, { useToast} from '../components/MyToasts';
 
 export default function RideHistory() {
+    const showToast = useToast();
+
     return(
         <>
+        <MyToasts />
         <div className="grid-my-profile-heading">
             <div className="grid-my-profile-heading-h1"> 
                 <h1>História jázd</h1>

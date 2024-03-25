@@ -41,6 +41,8 @@
 .logo-header {
     width: 160px;
     height: 90px;
+    border-bottom-left-radius: 60px;
+    border-top-right-radius: 60px;
 }
 
 .header-options {

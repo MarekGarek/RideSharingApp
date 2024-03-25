@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
+import MyToasts, { useToast} from './MyToasts';
+import AuthContext from '../AuthProvider';
 import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-import {useContext} from 'react';
-import AuthContext from '../AuthProvider'
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{4,20}$/; // musí obsahovať jedno male,velke pismeno a cislo
 
 export default function PassChange() {
     const jwtToken = localStorage.getItem('jwtToken');
     const {auth} = useContext(AuthContext);
+    const showToast = useToast();
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -23,20 +23,6 @@ export default function PassChange() {
         setValidPwd2(match);
     },[pwd, pwd2])
 
-    const toastSucc = () => {
-        toast.success('Heslo zmenené!', {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-        });
-    };
-
     const data = {
         login: auth.login,
         oldPwd: oldPwd,
@@ -50,7 +36,7 @@ export default function PassChange() {
             const response = await axios.put(`http://localhost:8080/info`, data, {
                 headers: { 'Authorization': `Bearer ${jwtToken}`}
             });
-            toastSucc("Heslo zmenené úspešne!");
+            showToast('success', 'Heslo zmenené úspešne!');
             setErrorMessage("");
             setPwd("");
             setPwd2("");
@@ -63,11 +49,10 @@ export default function PassChange() {
             } 
         }
     };
-    
 
     return(
         <>
-        <ToastContainer/>
+        <MyToasts />
         <br></br>
         <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <br></br>

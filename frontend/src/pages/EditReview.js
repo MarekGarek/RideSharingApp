@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import MyToasts, { useToast} from '../components/MyToasts';
 import axios from 'axios';
-import { useNavigate,useLocation } from 'react-router-dom';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-import {useContext} from 'react';
 import AuthContext from '../AuthProvider'
 
 export default function EditReview(){
-    const navigate = useNavigate();
     const {auth} = useContext(AuthContext);
     const jwtToken = localStorage.getItem('jwtToken');
-    
+    const showToast = useToast();
+
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const id = params.get('id');
@@ -64,15 +63,15 @@ export default function EditReview(){
                 recommendation: recommendation
             },{ headers: {'Authorization': `Bearer ${jwtToken}`}});
             if (response.status == 201) {
-                toastSucc("/profile/written-reviews");
+                showToast('success', 'Recenzia bola úspešne odoslaná!','/profile/written-reviews')
                 setSubmited(true);
             } else {
-                toastErr(response.status);
+                showToast('error', response.status)
             }
             
           } catch (error) {
             console.error(error);
-            toastErr(error.code);
+            showToast('error', error.code)
           }
     };
 
@@ -90,47 +89,16 @@ export default function EditReview(){
                 recommendation: recommendation    
             },{headers: { 'Authorization': `Bearer ${jwtToken}`}});
             if (response.status == 200) {
-                toastSucc("/profile/written-reviews");
+                showToast('success', 'Recenzia bola úspešne odoslaná!','/profile/written-reviews')
                 setSubmited(true);
             } else {
-                toastErr(response.status);
+                showToast('error', response.status)
             }
-            
           } catch (error) {
             console.error(error);
-            toastErr(error.code);
+            showToast('error', error.code)
           }
     };
-
-
-    const toastSucc = (url) => {
-        toast.success('Recenzia bola úspešne odoslaná!', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: () => navigate(url)
-        });
-      };
-
-    const toastErr = (err) => {
-    toast.error(err, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        });
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -142,11 +110,10 @@ export default function EditReview(){
         }
     };
 
-
     return(
         <>
         <br/><br/>
-        <ToastContainer/>
+        <MyToasts />
         <form onSubmit={handleSubmit}> 
         <div className="grid-reviews greenBG">
             <div className="review">

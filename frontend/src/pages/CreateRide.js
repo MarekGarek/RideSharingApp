@@ -1,16 +1,16 @@
-import '../css/CreateRide.css';
-import {useContext, useEffect, useState, useRef } from "react";
-import axios from 'axios';
-import AuthContext from '../AuthProvider';
+import {useContext, useEffect, useState} from "react";
+import MyToasts, { useToast} from '../components/MyToasts';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-
+import AuthContext from '../AuthProvider';
+import axios from 'axios';
+import '../css/CreateRide.css';
 
 export default function CreateRide() {
     const navigate = useNavigate();
     const {auth} = useContext(AuthContext);
     const jwtToken = localStorage.getItem('jwtToken');
     const [cars, setCars] = useState([]);
+    const showToast = useToast();
 
     const [autor, setAutor] = useState();
     const [car, setCar] = useState("");
@@ -24,6 +24,8 @@ export default function CreateRide() {
     const [price, setPrice] = useState('');
     const [info, setInfo] = useState('');
     
+    const [renderForm, setRenderForm] = useState(false);
+
     const fetchCars = async () => {
         try {
             const response = await axios.get('http://localhost:8080/cars', {
@@ -36,8 +38,6 @@ export default function CreateRide() {
         }
     };
 
-    const [renderForm, setRenderForm] = useState(false);
-    
     useEffect(() => {
         fetchCars();
     }, [auth.login, jwtToken]);
@@ -50,38 +50,8 @@ export default function CreateRide() {
             setRenderForm(false);
         }
     }, [cars]);
-    
-    const toastSucc = () => {
-        toast.success('Nová jazda bola úspešne vytvorená!', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: () => navigate("/profile/current-ride")
-        });
-    };
-
-    const toastErr = (err) => {
-        toast.error(err, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-            });
-        }
 
     const modelCar = cars.find(c => c.model === car);
-
     const data = modelCar ? {
         driver: autor,
         car: modelCar.idCar,
@@ -101,14 +71,14 @@ export default function CreateRide() {
             const response = await axios.post('http://localhost:8080/trip', data,
             { headers: {'Authorization': `Bearer ${jwtToken}`}});
             if (response.status == 201) {
-                toastSucc();
+                showToast('success','Nová jazda bola úspešne vytvorená!','/profile/current-ride')
             } else {
-                toastErr(response.status);
+                showToast('error', response.status);
             }
             
           } catch (error) {
             console.error(error);
-            toastErr(error.code);
+            showToast('error', error.code);
           }
     };
 
@@ -123,7 +93,7 @@ export default function CreateRide() {
 
     return(
         <>
-        <ToastContainer/>
+        <MyToasts />
         <div className="grid-my-profile-heading">
             <div className="grid-my-profile-heading-h1"> 
                 <h1>Vytvor novú jazdu </h1>
@@ -149,7 +119,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Autor:</a> 
                     </div>
                     <div>
-                        <a className="label-var">{autor}</a>
+                        <a className="label-var" style={{color: '#333333'}}>{autor}</a>
                     </div>
                 </p>
                 <hr class="featurette-divider"></hr>
@@ -204,7 +174,7 @@ export default function CreateRide() {
                         <a className="label-trpc">Auto: </a> 
                     </div>
                     <div>
-                        <select className="long-inputs form-control" value={car} onChange={(e)=>{setCar(e.target.value)}} required>
+                        <select className="long-inputs form-control" value={car} onChange={(e)=>{setCar(e.target.value)}} required style={{padding: '0px 6px 0px 6px'}}>
                         <option disabled={true}></option>
                         {cars.map((car) => (
                             <option value={car.model} id={car.idCar}>{car.model}</option>

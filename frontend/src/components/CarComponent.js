@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import React, { useState, useEffect, useContext } from 'react';
+import MyToasts, { useToast} from '../components/MyToasts';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import AuthContext from '../AuthProvider';
+import axios from 'axios';
 import '../css/Cars.css';
-import {useContext} from 'react';
-import AuthContext from '../AuthProvider'
 
 export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onDelete}) {
     const {auth} = useContext(AuthContext);
     const [editMode, setEditMode] = useState(edit);
     const widthClass = !hide ? "" : "special-width";
+    const showToast = useToast();
 
     const [unchanedIdCar, setUnchangedIdCar] = useState(car ? car.idCar : '');
     const [idCar, setIdCar] = useState(car ? car.idCar : '');
@@ -39,49 +39,6 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
       };
 
     const [btn, setBtn] = useState(false);
-    const toastSucc = (msg) => {
-        toast.success(msg, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: () => {deleteCar();fetchCars();}
-        });
-      };
-
-      const toastSuccP = (msg) => {
-        toast.success(msg, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: () => {window.location.reload();}
-        });
-      };  
-
-    const toastErr = (msg) => {
-    toast.error(msg, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-        });
-    }
 
     const toggleEditMode = (e) => {
         e.preventDefault();
@@ -117,25 +74,22 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
             });
             if (response.status == 201) {
                 setBtn(true);
-                toastSucc('Auto bolo úspešne pridané.');
+                showToast('success', 'Auto bolo úspešne pridané.', null, () => {deleteCar();fetchCars();})
             } else {
-                toastErr(response.status); 
+                showToast('error',response.status);
             }
           } catch (error) {
             if (error.response.status == 409) {
-                toastErr("Auto s rovnakou ŠPZ už existuje. Skontrolujte si svoju ŠPZ!");
+                showToast('error', 'Auto s rovnakou ŠPZ už existuje. Skontrolujte si svoju ŠPZ!');
             } else {
                 console.error(error);
-                toastErr(error.code);
+                showToast('error', error.code);
             }
           }
     };
 
-   
     const putData = async () => {
         try {
-            console.log("Halo");
-            console.log(jwtToken);
             const formData = createFormData();
             const response = await axios.put(`http://localhost:8080/cars/${unchanedIdCar}`, formData, {
                 headers: { 
@@ -146,16 +100,16 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
     
             if (response && response.status === 201) {
                 setBtn(true);
-                toastSuccP('Údaje boli aktualizované.');
+                showToast('success', 'Údaje boli aktualizované.', null, () => {window.location.reload()})
             } else {
-                toastErr('Neznáma chyba'); 
+                showToast('error', 'Neznáma chyba');
             }
         } catch (error) {
             if (error.response && error.response.status === 409) {
-                toastErr("Konflikt...");
+                showToast('error', 'Konflikt...');
             } else {
                 console.error(error);
-                toastErr(error.message || 'Došlo k chybe');
+                showToast('error', error.message || 'Došlo k chybe');
             }
         }
     };
@@ -183,7 +137,7 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
 
     return(
         <>
-        <ToastContainer/>
+        <MyToasts />
         <form onSubmit={handleSubmit}>
         {!hide ? (
         <>
