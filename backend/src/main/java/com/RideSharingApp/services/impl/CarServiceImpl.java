@@ -37,7 +37,6 @@ public class CarServiceImpl implements CarService {
             carEntity.setImg(imgPath);
         }
 
-
         return carRepository.save(carEntity);
     }
 
@@ -91,29 +90,21 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarEntity update(CarEntity carEntity, MultipartFile file, String stk, String unchangedIdCar) throws IOException, ParseException {
-        Optional<CarEntity> unchangedCar = this.findById(unchangedIdCar);
-        if (!unchangedCar.isPresent()) {
+        Optional<CarEntity> dbCar = this.findById(unchangedIdCar);
+        if (!dbCar.isPresent()) {
             throw new IllegalArgumentException("Car with ID " + unchangedIdCar + " not found.");
         }
 
-        String unchangedIdCarImg = unchangedCar.get().getImg();
-        carEntity.setImg(unchangedIdCarImg);
-
-        if (!carEntity.getIdCar().equals(unchangedIdCar)) {
-            if (file != null && !file.isEmpty()) {
-                this.delete(unchangedIdCar);
-            } else if(unchangedIdCarImg != null) {
-                this.deleteCarEntity(unchangedIdCar);
-                String newName = fileService.renameFile(unchangedIdCarImg, carEntity.getIdCar(),"CAR");
-                carEntity.setImg(newName);
-            } else {
-                this.deleteCarEntity(unchangedIdCar);
-            }
-        } else {
-            if (file != null && !file.isEmpty()) {
-                this.delete(unchangedIdCar);
-            }
+        CarEntity car = dbCar.get();
+        car.setStk(carEntity.getStk());
+        car.setModel(carEntity.getModel());
+        car.setModelYear(carEntity.getModelYear());
+        car.setSeats(carEntity.getSeats());
+        car.setTrunkSpace(carEntity.getTrunkSpace());
+        if (file != null && !file.isEmpty()) {
+            this.deleteImg(car.getImg());
         }
-        return save(carEntity, file, stk);
+
+        return save(car, file, stk);
     }
 }

@@ -9,6 +9,7 @@ import '../css/Cars.css';
 export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onDelete}) {
     const {auth} = useContext(AuthContext);
     const [editMode, setEditMode] = useState(edit);
+    const [updateMode, setUpdateMode] = useState(true);
     const widthClass = !hide ? "" : "special-width";
     const showToast = useToast();
 
@@ -18,7 +19,7 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
     const [model, setModel ] = useState('');
     const [seats, setSeats] = useState('');
     const [stk, setStk] = useState('');
-    const [img, setImg] = useState(car ? (car.img ? car.img : 'car.png') : 'car.png');
+    const [img, setImg] = useState('car.png');
     const [year, setYear] = useState('');
     const [trunk, setTrunk] = useState('');
 
@@ -33,7 +34,8 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
             setSeats(car.seats);
             setTrunk(car.trunkSpace);
             setYear(car.modelYear);
-            setImg(car.img);
+            setImg(car ? (car.img ? car.img : 'car.png') : 'car.png');
+            setUpdateMode(car ? false : true);
         }
     }, [car]);
 
@@ -104,13 +106,8 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
                     'Authorization': `Bearer ${jwtToken}`
                 }
             });
-    
-            if (response && response.status === 201) {
-                setBtn(true);
-                showToast('success', 'Údaje boli aktualizované.', null, () => {window.location.reload()})
-            } else {
-                showToast('error', 'Neznáma chyba');
-            }
+            setBtn(true);
+            showToast('success', 'Údaje boli aktualizované.', null, () => {window.location.reload()})
         } catch (error) {
             if (error.response && error.response.status === 409) {
                 showToast('error', 'Konflikt...');
@@ -194,7 +191,7 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
 
             <div className="grid-cars-idcar">
                 <p className="my-profile-label">ŠPZ</p>
-                {editMode ? (<input type="text" required minLength="7" maxLength="7" onChange={(e)=>{setIdCar(e.target.value)}}
+                {editMode && updateMode ? (<input type="text" required minLength="7" maxLength="7" onChange={(e)=>{setIdCar(e.target.value)}}
                                 value={idCar}/>
                 ) : (<><p>{idCar}</p><hr class="featurette-divider"></hr></>)}
             </div>
