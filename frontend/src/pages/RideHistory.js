@@ -39,7 +39,7 @@ export default function RideHistory() {
                 <TripComponent 
                     data={trip} 
                     usage={2} 
-                    bg={index % 2 === 0 ? 'white' : 'rgba(246, 224, 60, 0.81)'}
+                    bg={index % 2 === 0 ? 'white' : 'rgba(255, 251, 223, 0.81)'}
                 />
             ))
         }

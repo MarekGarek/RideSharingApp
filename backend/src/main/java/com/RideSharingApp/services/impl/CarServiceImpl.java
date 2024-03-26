@@ -1,6 +1,7 @@
 package com.RideSharingApp.services.impl;
 
 import com.RideSharingApp.domain.entities.CarEntity;
+import com.RideSharingApp.domain.entities.UserEntity;
 import com.RideSharingApp.repositories.CarRepository;
 import com.RideSharingApp.services.CarService;
 import com.RideSharingApp.services.FileService;

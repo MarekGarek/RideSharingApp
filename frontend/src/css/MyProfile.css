@@ -52,11 +52,16 @@
     width: 85%;
 }
 
+.special-width-for-my-profile {
+    min-width: 750px;
+}
+
 .my-profile-about {
     border: 1px solid #ccc;
     padding: 10px;
     width: 100%;
     height: auto;
+    border-radius: 5px;
 }
 
 .custom-file-upload {
@@ -109,6 +114,10 @@
         'grid-my-profile-about grid-my-profile-about ';
     }
 
+    .special-width-for-my-profile {
+        min-width: 380px;
+    }
+
     .my-profile-about {
         text-align: left;
         width: 380px;
@@ -139,6 +148,10 @@
         text-align: left;
         width: auto;
         margin-left: 30px;
+    }
+
+    .special-width-for-my-profile {
+        min-width: 770px;
     }
 
     .text-area-width {

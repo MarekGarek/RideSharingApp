@@ -37,9 +37,11 @@ export default function MyProfile() {
             </div>
         </div>
         <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
-        <br/>
-        
-        <ProfileComponent info={info}/>
+        <div style={{backgroundColor: 'white'}}>
+            <br/>
+            <ProfileComponent info={info}/>
+        </div>
+        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
         <PassChange/>
         </>
     );

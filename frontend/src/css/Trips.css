@@ -1,3 +1,7 @@
+.trip-search-bg {
+    background-color: rgb(247, 247, 247, 0.6);
+}
+
 .grid-trip-switch {grid-area: grid-trip-switch;}
 .grid-trip-from {grid-area: grid-trip-from;}
 .grid-trip-to {grid-area: grid-trip-to;}
@@ -6,7 +10,7 @@
 .grid-trip-search {grid-area: grid-trip-search;}
 
 .grid-trip {
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-areas: 

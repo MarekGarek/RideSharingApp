@@ -8,4 +8,8 @@ import java.util.List;
 public interface TripService {
     TripEntity save(TripEntity tripEntity);
     List<TripDetailsProjection> getUserHistoryTrips(String user);
+
+    List<TripDetailsProjection> getUserCurrentTrips(String user);
+
+    TripDetailsProjection findTrip(int idTrip);
 }

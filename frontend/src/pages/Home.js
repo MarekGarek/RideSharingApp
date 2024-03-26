@@ -11,6 +11,7 @@ export default function Home() {
 
     return (
         <>
+        <div style={{backgroundColor: 'white'}}>
         <br/>
         <div className="home-page-main-picture" >
             <p className="home-page-slogan">
@@ -23,8 +24,8 @@ export default function Home() {
                  <span className="slogan">Nájdi cestu tu !</span>
             </p>
         </div>
-        
-        <hr class="featurette-divider" style={{color: 'rgba(250, 222, 11, 0.808)', borderWidth: '4px'}}></hr>
+        <hr class="featurette-divider" style={{borderWidth: '3px'}}></hr>
+        </div>
         <section id="homesection">
         <HomeCard
         header1="Bezpečnosť a jednoduchosť"
@@ -37,7 +38,7 @@ export default function Home() {
         a zároveň získajte efektívny spôsob, ako sa dostať tam, kde potrebujete."
         pic2={fast}/>
 
-        <hr class="featurette-divider" style={{color: 'rgba(250, 222, 11, 0.808)', borderWidth: '4px'}}></hr>
+        <hr class="featurette-divider" style={{ borderWidth: '3px'}}></hr>
 
         <HomeCard
         header1="Na čas a bez prestupov"

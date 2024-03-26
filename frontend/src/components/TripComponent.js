@@ -19,7 +19,7 @@ export default function TripComponent({bg, usage, data}) {
         const date = new Date(data?.date);
         const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
         setDate(formattedDate);
-    }, []);
+    }, [data]);
 
     return(
         <>
@@ -142,14 +142,17 @@ export default function TripComponent({bg, usage, data}) {
             </form>
             </>) : (
                 <>
-                { usage === 2 ? (auth && auth.login !== data.driver &&(
+                { usage === 2 ? (auth && auth.login !== data?.driver &&(
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
                     onClick={() => {navigate(`/profile/edit-review?reviewer=${data?.driver}`)}}>Napíš recenziu</button>
-                )) : (
-                    <>  {/* TODO : Dalsi if lognuty user je tvorca cesty, vtedy ju moze zrusit / editnut*/}
-                        <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
+                )) : (auth && auth.login !== data?.driver ? (
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
+                ) : (
+                    <>
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Upraviť</button>
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Zmazať</button>
                     </>
-                )}
+                ))}
                 </>
             )}
             
@@ -157,7 +160,7 @@ export default function TripComponent({bg, usage, data}) {
             </div>
 
             <div className="grid-tripc-more">
-                <p role='button' style={{fontFamily: 'cursive'}} onClick={() => {navigate("/more-info")}}>Viac info...</p>
+                <p role='button' style={{fontFamily: 'cursive'}} onClick={() => {navigate(`/more-info?driver=${data?.driver}&car=${data?.car}&id=${data?.idTrip}&usage=${usage}`)}}>Viac info...</p>
             </div>
         </div>
         </>

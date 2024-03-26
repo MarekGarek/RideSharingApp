@@ -54,8 +54,6 @@ export default function PassChange() {
         <>
         <MyToasts />
         <br></br>
-        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
-        <br></br>
         <h3>Zmeniť heslo</h3>
         <form onSubmit={handleSubmit}>
         <div>

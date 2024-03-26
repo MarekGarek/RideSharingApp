@@ -15,6 +15,11 @@
 
 .home-header {
     font-weight: 600;
+    background-color: white;
+}
+
+.home-p {
+    background-color: white;
 }
 
 .home-card-img {

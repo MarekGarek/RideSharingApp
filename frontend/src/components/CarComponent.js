@@ -13,20 +13,27 @@ export default function CarComponent({car, edit, hide, deleteCar, fetchCars, onD
     const showToast = useToast();
 
     const [unchanedIdCar, setUnchangedIdCar] = useState(car ? car.idCar : '');
-    const [idCar, setIdCar] = useState(car ? car.idCar : '');
+    const [idCar, setIdCar] = useState('');
     const [owner, setOwner] = useState(auth.login);
-    const [model, setModel ] = useState(car ? car.model : '');
-    const [seats, setSeats] = useState(car ? car.seats : '');
+    const [model, setModel ] = useState('');
+    const [seats, setSeats] = useState('');
     const [stk, setStk] = useState('');
     const [img, setImg] = useState(car ? (car.img ? car.img : 'car.png') : 'car.png');
-    const [year, setYear] = useState(car ? car.modelYear : '');
-    const [trunk, setTrunk] = useState(car ? car.trunkSpace : '');
+    const [year, setYear] = useState('');
+    const [trunk, setTrunk] = useState('');
 
     useEffect(() => {
         if (car) {
             const date = new Date(car.stk);
             const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
             setStk(formattedDate);
+            setIdCar(car.idCar);
+            setModel(car.model);
+            setYear(car.year);
+            setSeats(car.seats);
+            setTrunk(car.trunkSpace);
+            setYear(car.modelYear);
+            setImg(car.img);
         }
     }, [car]);
 

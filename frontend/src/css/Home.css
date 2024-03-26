@@ -30,3 +30,11 @@ body {
 .home-page-button {
     background-color: #e3b433ec;
 }
+
+.more-info-h {
+    background-color: rgba(250, 222, 11, 0.808);
+    width: 100%;
+    text-align: center;
+    font-family: cursive;
+    border-radius: 4px;
+}

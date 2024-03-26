@@ -4,11 +4,13 @@ import TripComponent from '../components/TripComponent';
 export default function Trips() {
     return(
         <>
-        <p className="home-page-slogan" style={{marginTop: '10px'}}>
+        <div className="trip-search-bg">
+        <hr class="featurette-divider" style={{borderWidth: '4px', marginTop: '0px', marginBottom: '0px'}}></hr>
+        <br></br>
+        <p className="home-page-slogan">
             <span className="slogan">Vyhľadaj cestu : </span>
         </p>
-
-        <div className="grid-trip" style={{backgroundColor: 'white'}}>
+        <div className="grid-trip trip-search-bg">
             <div className="grid-trip-switch">
                 <i role="button" class="bi bi-arrow-down-up" style={{fontSize: '25px'}}></i>
             </div>
@@ -38,8 +40,9 @@ export default function Trips() {
                 <label className="labels-design" role="button" style={{fontSize: '20px'}}> &nbsp;Hľadaj  </label>
             </div>
         </div>
-
-        <hr class="featurette-divider" style={{borderWidth: '4px'}}></hr>
+        <br></br>
+        </div>
+        <hr class="featurette-divider" style={{borderWidth: '4px', marginTop: '0px'}}></hr>
 
         <p className="home-page-slogan">
             <span className="slogan">Dostupné cesty : </span>

@@ -4,7 +4,7 @@ import {useContext} from 'react';
 import AuthContext from '../AuthProvider'
 import axios from 'axios';
 
-export default function ProfileComponent({hide, info}) {
+export default function ProfileComponent({hide, info, width}) {
     const [editMode, setEditMode] = useState(false);
     const jwtToken = localStorage.getItem('jwtToken');
     const {auth} = useContext(AuthContext);
@@ -139,7 +139,7 @@ export default function ProfileComponent({hide, info}) {
                 <p>{email}</p>
                 {!editMode ? <hr class="featurette-divider"></hr> : (<></>)}
             </div>
-            <div className="grid-my-profile-about">
+            <div className={`grid-my-profile-about ${width}`}>
                 <p className="my-profile-label">O mne</p>
                 {editMode ? (
                 <textarea className="text-area-width" id="text" name="text" rows="4" cols="50" placeholder="Zadejte text..."

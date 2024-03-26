@@ -1,7 +1,9 @@
 package com.RideSharingApp.controllers;
 
 import com.RideSharingApp.domain.dto.CarDto;
+import com.RideSharingApp.domain.dto.UserDto;
 import com.RideSharingApp.domain.entities.CarEntity;
+import com.RideSharingApp.domain.entities.UserEntity;
 import com.RideSharingApp.mappers.Mapper;
 import com.RideSharingApp.services.CarService;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -64,5 +67,14 @@ public class CarController {
     public List<CarDto> userCars(@RequestParam(name = "owner") String owner) {
         List<CarEntity> carEntities = carService.findCarsOfOwner(owner);
         return carEntities.stream().map(carMapper::mapTo).collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/car")
+    public CarDto getCar(@RequestParam(name = "idCar") String idCar) {
+        Optional<CarEntity> carEntity = carService.findById(idCar);
+        if(carEntity.isPresent()) {
+            return carMapper.mapTo(carEntity.get());
+        }
+        return null;
     }
 }
