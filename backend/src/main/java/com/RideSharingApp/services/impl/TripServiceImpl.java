@@ -37,4 +37,9 @@ public class TripServiceImpl implements TripService {
     public TripDetailsProjection findTrip(int idTrip) {
         return tripRepository.getTrip(idTrip);
     }
+
+    @Override
+    public void delete(int id) {
+        tripRepository.deleteById(id);
+    }
 }

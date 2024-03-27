@@ -40,6 +40,7 @@ export default function CurrentRides() {
                     data={trip} 
                     usage={3} 
                     bg={index % 2 === 0 ? 'white' : 'rgba(255, 251, 223, 0.81)'}
+                    fetchItems={fetchItems}
                 />
             ))
         }

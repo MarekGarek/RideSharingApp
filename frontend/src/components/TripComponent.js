@@ -4,10 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {useContext} from 'react';
 import AuthContext from '../AuthProvider';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
-export default function TripComponent({bg, usage, data}) {
+export default function TripComponent({bg, usage, data, fetchItems}) {
     const navigate = useNavigate();
     const {auth} = useContext(AuthContext);
+    const jwtToken = localStorage.getItem('jwtToken');
 
     const [srcTime, setSrcTime] = useState();
     const [dstTime, setDstTime] = useState();
@@ -20,6 +24,28 @@ export default function TripComponent({bg, usage, data}) {
         const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
         setDate(formattedDate);
     }, [data]);
+
+    const [showModal, setShowModal] = useState(false);
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+    const handleDelete = () => {
+        deleteTrip();
+        handleClose();
+    };
+
+    const deleteTrip = async () => {
+        try {
+            const id = data?.idTrip;
+            await axios.delete(`http://localhost:8080/trip/${id}`, {
+                headers: { 
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            });
+            fetchItems();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return(
         <>
@@ -150,7 +176,17 @@ export default function TripComponent({bg, usage, data}) {
                 ) : (
                     <>
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Upraviť</button>
-                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Zmazať</button>
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
+                    onClick={handleShow}>Zmazať</button>
+                    <Modal show={showModal} onHide={handleClose}>
+                        <Modal.Header>
+                            <Modal.Title>Naozaj chceš zmazať túto cestu?</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={handleDelete}>Áno, vymazať</Button>
+                            <Button variant="secondary" onClick={handleClose}> Nie</Button>
+                        </Modal.Footer>
+                    </Modal>
                     </>
                 ))}
                 </>

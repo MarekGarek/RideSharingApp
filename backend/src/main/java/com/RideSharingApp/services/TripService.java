@@ -12,4 +12,6 @@ public interface TripService {
     List<TripDetailsProjection> getUserCurrentTrips(String user);
 
     TripDetailsProjection findTrip(int idTrip);
+
+    void delete(int id);
 }

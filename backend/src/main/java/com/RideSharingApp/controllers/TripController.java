@@ -45,4 +45,10 @@ public class TripController {
     public TripDetailsProjection getTrip(@RequestParam(name = "idTrip") int idTrip) {
         return tripService.findTrip(idTrip);
     }
+
+    @DeleteMapping(path = "/trip/{id}")
+    public ResponseEntity deleteTrip(@PathVariable("id") int id) {
+        tripService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
