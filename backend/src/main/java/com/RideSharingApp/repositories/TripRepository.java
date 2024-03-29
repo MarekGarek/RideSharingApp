@@ -48,7 +48,7 @@ public interface TripRepository extends CrudRepository<TripEntity, Integer> {
             "COALESCE(pl.total_seats, 0) AS reservedSeats, COALESCE(pl.total_trunk, 0) AS reservedTrunk " +
             "FROM trips t JOIN cars c ON t.car = c.id_car " +
             "LEFT JOIN (SELECT trip, SUM(seats) AS total_seats, SUM(trunk_space) AS total_trunk FROM passengerslists GROUP BY trip) pl ON t.id_trip = pl.trip " +
-            "WHERE t.src_town = :source AND t.dst_town = :destination AND t.src_time >= :time AND t.date >= :date", nativeQuery = true)
+            "WHERE t.src_town = :source AND t.dst_town = :destination AND (t.date > :date OR (t.date = :date AND t.src_time >= :time))", nativeQuery = true)
     List<TripDetailsProjection> getTrips(@Param("source") String source,
                                          @Param("destination") String destination,
                                          @Param("time") LocalTime time,
