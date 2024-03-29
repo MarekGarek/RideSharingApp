@@ -66,6 +66,7 @@ export default function Chats() {
     return(
         <>
         <body className="chats-page">
+        <h3 onClick={switchPage}> Zmeň sa </h3>
         <br/>
         <div className="grid-chat">
             <div className={`grid-chat-sidebar ${sidebar}`}>

@@ -7,6 +7,8 @@ import com.RideSharingApp.repositories.TripRepository;
 import com.RideSharingApp.services.TripService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +43,15 @@ public class TripServiceImpl implements TripService {
     @Override
     public void delete(int id) {
         tripRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<TripEntity> findOne(int id) {
+        return tripRepository.findById(id);
+    }
+
+    @Override
+    public List<TripDetailsProjection> getTrips(String source, String destination, LocalTime time, LocalDate date) {
+        return tripRepository.getTrips(source,destination,time,date);
     }
 }

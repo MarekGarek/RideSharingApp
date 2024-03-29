@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import MyToasts, { useToast} from '../components/MyToasts';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '../AuthProvider';
 import axios from 'axios';
 import '../css/CreateRide.css';
@@ -25,6 +25,44 @@ export default function CreateRide() {
     const [info, setInfo] = useState('');
     
     const [renderForm, setRenderForm] = useState(false);
+
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const [trip, setTrip] = useState();
+
+    const fetchTrip = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/trip-dto/${id}`,{
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+            });
+            setTrip(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        if (trip) {
+            setAutor(trip.driver);
+            setCar(trip.car);
+            const d = new Date(trip.date);
+            const fd = d.toISOString().split('T')[0];
+            setDate(fd);
+            setSrcTown(trip.srcTown);
+            setDstTown(trip.dstTown);
+            setSrcTime(trip.srcTime);
+            setDstTime(trip.dstTime);
+            setSeats(trip.seats);
+            setTrunk(trip.trunkSpace);
+            setPrice(trip.price);
+            setInfo(trip.info);
+        }
+    }, [trip]);
+
+    useEffect(() => {
+        fetchTrip();
+    }, [id]);
 
     const fetchCars = async () => {
         try {
@@ -51,10 +89,17 @@ export default function CreateRide() {
         }
     }, [cars]);
 
+    const [help, setHelp] = useState("");
     const modelCar = cars.find(c => c.model === car);
-    const data = modelCar ? {
+
+    useEffect(() => {
+        let newHelp = modelCar?.idCar ? modelCar?.idCar : car;
+        setHelp(newHelp);
+    }, [cars, car, modelCar]);
+    
+    const data = {
         driver: autor,
-        car: modelCar.idCar,
+        car: help,
         date: date,
         srcTown: srcTown,
         dstTown: dstTown,
@@ -64,7 +109,7 @@ export default function CreateRide() {
         trunkSpace: trunk,
         price: price,
         info: info
-    } : null;
+    };
 
     const postData = async () => {
         try {
@@ -82,13 +127,28 @@ export default function CreateRide() {
           }
     };
 
+    const putData = async () => {
+        try {
+            const response = await axios.put(`http://localhost:8080/trip/${id}`, data ,
+            {headers: { 'Authorization': `Bearer ${jwtToken}`}});
+            if (response.status == 200) {
+                showToast('success', 'Jazda bola úspešne upravená!','/profile/current-ride')
+            } else {
+                showToast('error', response.status)
+            }
+          } catch (error) {
+            console.error(error);
+            showToast('error', error.code)
+          }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-//        if (id) {
-//            putData();
-//        } else {
+        if (id) {
+            putData();
+        } else {
             postData();
-//        }
+        }
     };
 
     return(
@@ -174,10 +234,11 @@ export default function CreateRide() {
                         <a className="label-trpc">Auto: </a> 
                     </div>
                     <div>
-                        <select className="long-inputs form-control" value={car} onChange={(e)=>{setCar(e.target.value)}} required style={{padding: '0px 6px 0px 6px'}}>
+                        <select className="long-inputs form-control" value={car} 
+                            onChange={(e)=>{setCar(e.target.value)}} required style={{padding: '0px 6px 0px 6px'}}>
                         <option disabled={true}></option>
                         {cars.map((car) => (
-                            <option value={car.model} id={car.idCar}>{car.model}</option>
+                            <option value={car.idCar} id={car.idCar}>{car.model}</option>
                         ))}
                         </select>
                     </div>
@@ -204,7 +265,7 @@ export default function CreateRide() {
                     </div>
                     <div>
                         <input type='number'className="long-inputs form-control" required
-                               onChange={(e)=>{setTrunk(e.target.value)}}/>
+                               onChange={(e)=>{setTrunk(e.target.value)}} value={trunk}/>
                     </div>
                 </p>
                 <hr class="featurette-divider media-q"></hr>
@@ -216,12 +277,14 @@ export default function CreateRide() {
                     </div>
                     <div>
                         <input type='number' className="long-inputs form-control" step="0.2" required max="999"
-                               onChange={(e)=>{setPrice(e.target.value)}}/>
+                               onChange={(e)=>{setPrice(e.target.value)}} value={price}/>
                     </div>
             </div>
 
             <div className="grid-tripc-more" style={{textAlign: 'right'}}>
-                <button type="submit" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary" >Vytvoriť</button>
+                <button type="submit" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">
+                    {id ? "Uložiť" : "Vytvoriť"}
+                </button>
             </div>
         </div>
         </div>

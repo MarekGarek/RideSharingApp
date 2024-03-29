@@ -139,12 +139,17 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
             <div className="grid-tripc-log">
             { usage === 1 ? (
             <>
-            <form>
             <Dropdown>
+                { auth.login ? 
+                <>
+                { auth.login === data?.driver ? 
+                <>
+                </> : 
+                <>
                 <Dropdown.Toggle className="btn btn-outline-light btn-floating m-1 btn-primary" id="dropdown-basic">
                 Prihlásiť sa
                 </Dropdown.Toggle>
-
+                <form>
                 <Dropdown.Menu>
                 <div className="my-drpdwn-menu">
                     <label htmlFor="pocetOsob">Počet osôb: &nbsp;&nbsp;&nbsp;</label>
@@ -164,8 +169,18 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                     <button type="submit" className="btn btn-primary">Odoslať</button>
                 </div>
                 </Dropdown.Menu>
+                </form>
+                </>}
+                </> : 
+                <>
+                <button className="btn btn-outline-light btn-floating m-1 btn-primary"
+                        onClick={() => {navigate(`/login`)}}>
+                    Prihlásiť sa
+                </button>
+                </>}
+                
             </Dropdown>
-            </form>
+            
             </>) : (
                 <>
                 { usage === 2 ? (auth && auth.login !== data?.driver &&(
@@ -175,7 +190,8 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
                 ) : (
                     <>
-                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Upraviť</button>
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
+                    onClick={() => {navigate(`/profile/create-ride?id=${data?.idTrip}`)}}>Upraviť</button>
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
                     onClick={handleShow}>Zmazať</button>
                     <Modal show={showModal} onHide={handleClose}>

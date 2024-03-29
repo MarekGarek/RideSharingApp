@@ -2,16 +2,17 @@ package com.RideSharingApp.controllers;
 
 import com.RideSharingApp.domain.dto.TripDetailsProjection;
 import com.RideSharingApp.domain.dto.TripDto;
-import com.RideSharingApp.domain.dto.UserDto;
 import com.RideSharingApp.domain.entities.TripEntity;
-import com.RideSharingApp.domain.entities.UserEntity;
 import com.RideSharingApp.mappers.Mapper;
 import com.RideSharingApp.services.TripService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -50,5 +51,36 @@ public class TripController {
     public ResponseEntity deleteTrip(@PathVariable("id") int id) {
         tripService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "/trip-dto/{id}")
+    public ResponseEntity<TripDto> getTripDto(@PathVariable("id") int id) {
+        Optional<TripEntity> foundTrip = tripService.findOne(id);
+        return foundTrip.map(tripEntity -> {
+            TripDto tripDto = tripMapper.mapTo(tripEntity);
+            return new ResponseEntity<>(tripDto,HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/trip/{id}")
+    public ResponseEntity<TripDto> fullUpdateTrip(@RequestBody TripDto tripDto,@PathVariable("id") int id) {
+        tripDto.setIdTrip(id);
+        TripEntity tripEntity = tripMapper.mapFrom(tripDto);
+        TripEntity savedTripEntity = tripService.save(tripEntity);
+        return new ResponseEntity<>(tripMapper.mapTo(savedTripEntity),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/trips")
+    public List<TripDetailsProjection> trips(@RequestParam(name = "source") String source,
+                                             @RequestParam(name = "destination") String destination,
+                                             @RequestParam(name = "time", required = false) LocalTime time,
+                                             @RequestParam(name = "date", required = false) LocalDate date) {
+        if (time == null) {
+            time = LocalTime.now();
+        }
+        if (date == null) {
+            date = LocalDate.now();
+        }
+        return tripService.getTrips(source,destination,time, date);
     }
 }
