@@ -1,21 +1,28 @@
-import '../css/TripComponent.css';
+import { useState, useEffect, useContext } from 'react';
+import MyToasts, { useToast} from '../components/MyToasts';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import {useContext} from 'react';
 import AuthContext from '../AuthProvider';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import '../css/TripComponent.css';
 
 export default function TripComponent({bg, usage, data, fetchItems}) {
     const navigate = useNavigate();
     const {auth} = useContext(AuthContext);
     const jwtToken = localStorage.getItem('jwtToken');
+    const showToast = useToast();
 
     const [srcTime, setSrcTime] = useState();
     const [dstTime, setDstTime] = useState();
     const [date, setDate] = useState();
+
+    const [trip, setTrip] = useState();
+    const [seats, setSeats] = useState();
+    const [trunk, setTrunk] = useState();
+    const [payment, setPayment] = useState();
+    const [passenger, setPassenger] = useState();
 
     useEffect(() => {
         setSrcTime(data?.srcTime.slice(0,5))
@@ -23,6 +30,10 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
         const date = new Date(data?.date);
         const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
         setDate(formattedDate);
+
+        setTrip(data?.idTrip);
+        setPassenger(auth.login);
+        fetchPassangers();
     }, [data]);
 
     const [showModal, setShowModal] = useState(false);
@@ -47,8 +58,65 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
         }
     }
 
+    const passengerList = {
+        passenger: passenger,
+        trip: trip,
+        seats: seats,
+        trunkSpace: trunk,
+        payment: payment
+    }
+
+    const postForm = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/passenger-list', passengerList,
+            { headers: {'Authorization': `Bearer ${jwtToken}`}});
+            showToast('success','Úspešne si sa prihlásil!','/profile/current-ride')
+          } catch (error) {
+            console.error(error);
+            showToast('error', error.code);
+          }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        postForm();
+        console.log(passengerList);
+        setSeats(0);
+        setTrunk(0);
+    };
+
+    //const [passangers, setPassangers] = useState([]);
+    const [registered, setRegistered] = useState(false);
+    const fetchPassangers = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/passengers', {
+                params: { id: data?.idTrip },
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+            });
+            //setPassangers(response.data);
+            const pom = response.data.some(p => p.passenger === auth.login)
+            setRegistered(pom);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleLogOut = async () => {
+        try {
+            await axios.delete(`http://localhost:8080/passengers`,  {
+                params: { id: data?.idTrip, passenger: auth.login},
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+            });
+            handleClose();
+            fetchItems();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <>
+        <MyToasts />
         <div className="grid-tripc" style={{backgroundColor: bg}}>
             <div className="grid-tripc-author">
                 <p>
@@ -142,28 +210,40 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
             <Dropdown>
                 { auth.login ? 
                 <>
-                { auth.login === data?.driver ? 
+                { auth.login === data?.driver || registered ? 
                 <>
+                { auth.login !== data?.driver ?
+                <>
+                <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
+                        onClick={() => {navigate(`/profile/current-ride`)}}>Odhlásiť sa</button>       
+                </>
+                : <></> }
                 </> : 
                 <>
                 <Dropdown.Toggle className="btn btn-outline-light btn-floating m-1 btn-primary" id="dropdown-basic">
                 Prihlásiť sa
                 </Dropdown.Toggle>
-                <form>
+                <form onSubmit={handleSubmit}>
                 <Dropdown.Menu>
                 <div className="my-drpdwn-menu">
                     <label htmlFor="pocetOsob">Počet osôb: &nbsp;&nbsp;&nbsp;</label>
-                    <input id="pocetOsob" type="number" style={{width: '50px', margin: '1px'}} required min="1"/>
-
+                    <input id="pocetOsob" type="number" style={{width: '50px', margin: '1px'}} required min="1"
+                            max={data?.seats - data?.reservedSeats} value={seats}
+                            onChange={(e) => setSeats(e.target.value)}>
+                    </input>
                     <label htmlFor="batozina">Batožina (l): &nbsp;&nbsp;&nbsp;</label>
-                    <input id="batozina" type="number" style={{width: '50px', margin: '1px'}} required min="0"/>
-
+                    <input id="batozina" type="number" style={{width: '50px', margin: '1px'}} required min="0"
+                            max={data?.trunkSpace - data?.reservedTrunk} value={trunk}
+                            onChange={(e) => setTrunk(e.target.value)}>
+                    </input>
                     <div onClick={(e) => e.stopPropagation()}>
                         <label>Zaplatiť : &nbsp;</label> <br/>
                         <label>online&nbsp;</label>
-                        <input type="radio" name="paymentMethod" value="online" required/>
+                        <input type="radio" name="paymentMethod" value="online" required
+                            onChange={() => setPayment("online")}/>
                         <label>&nbsp;&nbsp;&nbsp;hotovosť&nbsp;</label>
-                        <input type="radio" name="paymentMethod" value="cash" required/>
+                        <input type="radio" name="paymentMethod" value="cash" required
+                            onChange={() => setPayment("cash")}/>
                     </div>
                     <br/>
                     <button type="submit" className="btn btn-primary">Odoslať</button>
@@ -187,7 +267,19 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
                     onClick={() => {navigate(`/profile/edit-review?reviewer=${data?.driver}`)}}>Napíš recenziu</button>
                 )) : (auth && auth.login !== data?.driver ? (
-                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Odhlásiť sa</button>
+                    <>
+                    <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"
+                        onClick={handleShow}>Odhlásiť sa</button>
+                    <Modal show={showModal} onHide={handleClose}>
+                            <Modal.Header>
+                                <Modal.Title>Naozaj sa chceš odhlásiť z tejto cesty?</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={handleLogOut}>Áno, odhlásiť sa</Button>
+                                <Button variant="secondary" onClick={handleClose}> Nie</Button>
+                            </Modal.Footer>
+                    </Modal>   
+                    </> 
                 ) : (
                     <>
                     <button className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary"

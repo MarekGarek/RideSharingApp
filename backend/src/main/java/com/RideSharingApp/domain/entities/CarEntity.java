@@ -16,7 +16,7 @@ import java.util.Date;
 @Table(name = "cars")
 public class CarEntity {
     @Id
-    @Column(name = "id_car",nullable = false, unique = true, length = 7)
+    @Column(name = "id_car",nullable = false, columnDefinition = "CHAR(7)")
     private String idCar;
 
     @ManyToOne
