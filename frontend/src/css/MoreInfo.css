@@ -1,0 +1,30 @@
+.passengers-table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(247, 247, 247);
+}
+
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+th {
+    background-color: rgba(250, 222, 11, 0.808);
+}
+
+.div-table {
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 15px;
+}

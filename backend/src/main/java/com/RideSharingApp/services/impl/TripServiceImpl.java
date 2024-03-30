@@ -3,6 +3,7 @@ package com.RideSharingApp.services.impl;
 import com.RideSharingApp.domain.dto.TripDetailsProjection;
 import com.RideSharingApp.domain.entities.TripEntity;
 import com.RideSharingApp.domain.entities.UserEntity;
+import com.RideSharingApp.repositories.PassengerListRepository;
 import com.RideSharingApp.repositories.TripRepository;
 import com.RideSharingApp.services.TripService;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,11 @@ import java.util.Optional;
 @Service
 public class TripServiceImpl implements TripService {
     private TripRepository tripRepository;
+    private PassengerListRepository passRepository;
 
-    public TripServiceImpl(TripRepository tripRepository) {
+    public TripServiceImpl(TripRepository tripRepository, PassengerListRepository passRepository) {
         this.tripRepository = tripRepository;
+        this.passRepository = passRepository;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public void delete(int id) {
+        passRepository.deleteByIdTrip(id);
         tripRepository.deleteById(id);
     }
 

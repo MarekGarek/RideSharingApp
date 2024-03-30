@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import MyToasts, { useToast} from '../components/MyToasts';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from '../AuthProvider';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -10,6 +10,7 @@ import '../css/TripComponent.css';
 
 export default function TripComponent({bg, usage, data, fetchItems}) {
     const navigate = useNavigate();
+    const location = useLocation();
     const {auth} = useContext(AuthContext);
     const jwtToken = localStorage.getItem('jwtToken');
     const showToast = useToast();
@@ -52,7 +53,11 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                     'Authorization': `Bearer ${jwtToken}`
                 }
             });
-            fetchItems();
+            if (location.pathname === '/more-info') {
+                navigate('/profile/current-ride');
+            } else if (location.pathname === '/profile/current-ride') {
+                fetchItems();
+            }
         } catch (error) {
             console.log(error);
         }
@@ -108,7 +113,11 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                 headers: { 'Authorization': `Bearer ${jwtToken}` }
             });
             handleClose();
-            fetchItems();
+            if (location.pathname === '/more-info') {
+                navigate('/profile/current-ride');
+            } else if (location.pathname === '/profile/current-ride') {
+                fetchItems();
+            }
         } catch (error) {
             console.log(error);
         }
