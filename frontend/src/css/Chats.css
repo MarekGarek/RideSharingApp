@@ -7,17 +7,35 @@ body.chats-page {
 .grid-chat-chat {grid-area: grid-chat-chat;}
 .grid-chat-submit {grid-area: grid-chat-submit;}
 
+.grid-chat-sidebar {
+    background-color: white;
+}
+
+.list-group-item.active {
+    border-radius: 0 !important;
+}
+
+.user-username {
+    font-size: small;
+}
+
 .grid-chat {
     display: grid;
     grid-template-areas: 
     'grid-chat-sidebar grid-chat-chat'
     'grid-chat-sidebar grid-chat-submit';
     grid-template-columns: 25% 65%;
+    grid-template-rows: 80% 10%;
     height: 70vh;
 }
 
+.grid-chat-idTrip{
+    color: gray;
+    font-size: small;
+}
+
 .users-style {
-    width: 100%;
+    width: 98%;
     max-height: 70vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -101,6 +119,10 @@ body.chats-page {
     width: auto;
 }
 
+.button-switch-chat{
+    display: none;
+}
+
 @media (max-width: 768px) {
     .grid-chat {
         grid-template-areas: 
@@ -108,12 +130,17 @@ body.chats-page {
         'grid-chat-chat'
         'grid-chat-submit';
         grid-template-columns: 100%;
+        grid-template-rows: none;
         margin: 10px;
     }
 
     .grid-chat-sidebar, .grid-chat-chat, .grid-chat-submit {
       width: 100%;
       display: none;
+    }
+
+    .grid-chat-sidebar, .grid-chat-chat {
+        height: 60vh;
     }
   
     .active {
@@ -150,5 +177,11 @@ body.chats-page {
     .my-paragraph {
         margin-right: 10px;
     
+    }
+
+    .button-switch-chat{
+        width: 100%;
+        margin: 5px;
+        display: inline-block;
     }
   }

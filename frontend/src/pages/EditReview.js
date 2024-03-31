@@ -136,7 +136,7 @@ export default function EditReview(){
                           onChange={(e) => setText(e.target.value)}></textarea>
             </div>  
             <div className="bool greenBG">
-                <label>Odporúčate našu stránku?</label>
+                <label>Odporúčate používateľa?</label>
                 <input type="checkbox" className="review-checkbox" style={{width: '60px'}} checked={recommendation}
                        onChange={(e) => setRecommendation(e.target.checked)}></input>
             </div>

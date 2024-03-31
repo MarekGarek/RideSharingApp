@@ -1,10 +1,7 @@
 package com.RideSharingApp.controllers;
 
-import com.RideSharingApp.domain.dto.CarDto;
 import com.RideSharingApp.domain.dto.PasswordChangeDto;
 import com.RideSharingApp.domain.dto.UserDto;
-import com.RideSharingApp.domain.dto.UserProfileUpdateDto;
-import com.RideSharingApp.domain.entities.CarEntity;
 import com.RideSharingApp.domain.entities.UserEntity;
 import com.RideSharingApp.mappers.Mapper;
 import com.RideSharingApp.services.UserService;
@@ -12,9 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
