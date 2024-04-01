@@ -123,6 +123,18 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
         }
     }
 
+    const fetchRoom = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/room', {
+                params: { login: auth.login, user: data?.driver },
+                headers: { 'Authorization': `Bearer ${jwtToken}` }
+            });
+            navigate(`/chats?id=${response.data}`)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return(
         <>
         <MyToasts />
@@ -132,9 +144,24 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                     <div>
                         <a className="label-trpc">Šofér:</a> 
                     </div>
-                    <div>
+                    { auth.login === data?.driver ? 
+                    <>
                         <a className="label-var">{data?.driver}</a>
+                    </> : 
+                    <>
+                    <div>
+                    <Dropdown>
+                        <Dropdown.Toggle variant="" style={{ backgroundColor: 'transparent', borderColor: 'transparent', boxShadow: 'none', padding: '0' }}>
+                            <a className="label-var">
+                                {data?.driver}
+                            </a>
+                        </Dropdown.Toggle>
+                            <Dropdown.Menu style={{textAlign: 'center'}} onClick={fetchRoom} type="button">
+                                Napísať správu
+                            </Dropdown.Menu>
+                    </Dropdown>
                     </div>
+                    </>}
                 </p>
                 <hr class="featurette-divider"></hr>
             </div>
@@ -183,7 +210,7 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                     <div>
                         <a className="label-trpc">Auto: </a> 
                     </div>
-                    <div>
+                    <div style={{paddingBottom: '2px'}}>
                         <a className="label-var">{data?.model}</a>
                     </div> 
                     <hr class="featurette-divider"></hr>
@@ -229,6 +256,8 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                 : <></> }
                 </> : 
                 <>
+                {(data?.seats - data?.reservedSeats) > 0 ? 
+                <>
                 <Dropdown.Toggle className="btn btn-outline-light btn-floating m-1 btn-primary" id="dropdown-basic">
                 Prihlásiť sa
                 </Dropdown.Toggle>
@@ -259,6 +288,7 @@ export default function TripComponent({bg, usage, data, fetchItems}) {
                 </div>
                 </Dropdown.Menu>
                 </form>
+                </> : ""}
                 </>}
                 </> : 
                 <>

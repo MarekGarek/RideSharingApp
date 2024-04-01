@@ -1,14 +1,9 @@
-body.chats-page {
-    background-image: url('../images/bgchat.webp');
-    background-position: bottom center;
-}
-
 .grid-chat-sidebar {grid-area: grid-chat-sidebar;}
 .grid-chat-chat {grid-area: grid-chat-chat;}
 .grid-chat-submit {grid-area: grid-chat-submit;}
 
 .grid-chat-sidebar {
-    background-color: white;
+    background-color: #f7f7f7;
 }
 
 .list-group-item.active {
@@ -113,7 +108,7 @@ body.chats-page {
 .list-group-item.active {
     z-index: 2;
     color: black;
-    background-color: rgba(250, 222, 11, 0.808);
+    background-color: rgba(250, 222, 11, 0.808) !important;
     border-color: rgba(250, 222, 11, 0.808);
     border-radius: 20px;
     width: auto;

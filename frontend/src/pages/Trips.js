@@ -60,13 +60,13 @@ export default function Trips() {
             <div className="grid-trip-void"></div>
             <div className="grid-trip-from">
                 <label className="labels-design"> Odkiaľ </label> <br/>
-                <input type="text" className="inputs-design" required minLength={3} maxLength={25}
+                <input type="text" className="inputs-design" required minLength={1} maxLength={25}
                     onChange={(e) => setSource(e.target.value)} value={source}/>
             </div>
 
             <div className="grid-trip-to">
                 <label className="labels-design"> Kam </label> <br/>
-                <input type="text" className="inputs-design" required minLength={3} maxLength={25}
+                <input type="text" className="inputs-design" required minLength={1} maxLength={25}
                     onChange={(e) => setDestination(e.target.value)} value={destination}/>
             </div>
 

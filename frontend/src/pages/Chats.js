@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import AuthContext from '../AuthProvider'
 import axios from 'axios';
 import '../css/Chats.css';
@@ -6,6 +7,10 @@ import '../css/Chats.css';
 export default function Chats() {
     const {auth} = useContext(AuthContext);
     const jwtToken = localStorage.getItem('jwtToken');
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const idFromUrl = query.get('id');
+    const [roomId, setRoomId] = useState(idFromUrl);
 
     const formatDate = (d) => {
         const date = new Date(d);
@@ -65,6 +70,16 @@ export default function Chats() {
 
     useEffect(() => {
         fetchCatters();
+        if (idFromUrl) {
+            switchPage();
+            if (window.innerWidth > 768) {
+                window.scrollTo(0, 0);
+            } else {
+                window.scrollTo(115, 115);
+            }
+            setActiveChatter(idFromUrl);
+            fetchMessages(idFromUrl);
+        }
     }, [auth.login, jwtToken]);
 
     const [messages, setMessages] = useState([]);
@@ -80,13 +95,53 @@ export default function Chats() {
         }
     };
 
-    const [activeChatter, setActiveChatter] = useState(null);
+    useEffect(() => {
+        if (roomId !== null) {
+            const interval = setInterval(() => {
+                fetchMessages(roomId);
+            }, 2000);
+        
+            return () => clearInterval(interval);
+        }
+      }, [roomId]);
+
+    const [activeChatter, setActiveChatter] = useState();
     const [name, setName] = useState(" ");
     const handleClick = (id,name) => {
+        setRoomId(id);
         setActiveChatter(id);
         fetchMessages(id);
         switchPage();
         setName(name);
+    };
+
+    const chatboxRef = useRef(null);
+    useEffect(() => {
+        if (chatboxRef.current) {
+          const { scrollHeight, clientHeight } = chatboxRef.current;
+          chatboxRef.current.scrollTop = scrollHeight - clientHeight;
+        }
+      }, [messages]);
+
+      
+      const [text, setText] = useState();
+      const postMessage = async () => {
+        if (text?.length > 0) {
+            try {
+                const response = await axios.post('http://localhost:8080/messages', 
+                {
+                    user: auth.login,
+                    room: roomId,
+                    message: text,
+                    date: new Date().toISOString(),
+                },
+                { headers: {'Authorization': `Bearer ${jwtToken}`}});
+                fetchMessages(roomId);
+                setText('');
+              } catch (error) {
+                console.error(error);
+              }
+        }
     };
 
     return(
@@ -102,11 +157,12 @@ export default function Chats() {
                     {chatters.map((ch) => {
                         return (
                             <>
+                            <div>
                             <a role="button" 
                                 className={`list-group-item list-group-item-action py-3 lh-tight ${activeChatter === ch?.room ? 'active' : ''}`} 
                                 aria-current="true"
                                 key={ch?.room}
-                                onClick={() => handleClick(ch?.room,ch?.name)}
+                                onClick={() => handleClick(ch?.room,ch?.name)} style={{backgroundColor: '#f7f7f7'}}
                             >
                                 <div className="d-flex w-100 align-items-center justify-content-between" >
                                     <strong className="mb-1">
@@ -118,6 +174,7 @@ export default function Chats() {
                                     </strong>
                                 </div>
                             </a>
+                            </div>
                             </>
                         );
                         })}
@@ -131,7 +188,7 @@ export default function Chats() {
                 </button> : "" 
             }
 
-            <div className={`grid-chat-chat users-style chat-box ${chat}`}>
+            <div className={`grid-chat-chat users-style chat-box ${chat}`} ref={chatboxRef} style={{ overflowY: 'auto'}}>
             {messages.map((m) => {
                 return (
                     <>
@@ -151,12 +208,16 @@ export default function Chats() {
                 
             </div>
             <div className={`grid-chat-submit ${chat}`}>
-                <input type="text" className="input-chat"></input>
-                <buttton className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary chat-btn">
+                <input type="text" className="input-chat" onChange={(e) => setText(e.target.value)} value={text}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              postMessage(e);
+                            }
+                          }}></input>
+                <buttton type="submit" className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary chat-btn" onClick={postMessage}>
                     <i class="bi bi-caret-right-fill"></i>
                 </buttton>
             </div>
-           
         </div>
         <br/>
         </body>

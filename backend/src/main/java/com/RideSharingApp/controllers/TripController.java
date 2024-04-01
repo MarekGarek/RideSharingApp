@@ -2,8 +2,11 @@ package com.RideSharingApp.controllers;
 
 import com.RideSharingApp.domain.dto.TripDetailsProjection;
 import com.RideSharingApp.domain.dto.TripDto;
+import com.RideSharingApp.domain.entities.MessageEntity;
+import com.RideSharingApp.domain.entities.RoomEntity;
 import com.RideSharingApp.domain.entities.TripEntity;
 import com.RideSharingApp.mappers.Mapper;
+import com.RideSharingApp.services.ChatService;
 import com.RideSharingApp.services.TripService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +22,20 @@ import java.util.Optional;
 public class TripController {
     private TripService tripService;
     private Mapper<TripEntity, TripDto> tripMapper;
+    private ChatService chatService;
 
-    public TripController(TripService tripService, Mapper<TripEntity, TripDto> tripMapper) {
+    public TripController(TripService tripService, Mapper<TripEntity, TripDto> tripMapper, ChatService chatService) {
         this.tripService = tripService;
         this.tripMapper = tripMapper;
+        this.chatService = chatService;
     }
 
     @PostMapping(path = "/trip")
     public ResponseEntity<TripDto> createTrip(@RequestBody TripDto tripDto) {
         TripEntity tripEntity = tripMapper.mapFrom(tripDto);
         TripEntity savedTripEntity = tripService.save(tripEntity);
+        RoomEntity savedRoomEntity = chatService.saveRoom(savedTripEntity);
+        MessageEntity savedMessageEntity = chatService.saveMessage(savedRoomEntity,tripEntity.getDriver());
         return new ResponseEntity<>(tripMapper.mapTo(savedTripEntity),HttpStatus.CREATED);
     }
 
@@ -49,6 +56,7 @@ public class TripController {
 
     @DeleteMapping(path = "/trip/{id}")
     public ResponseEntity deleteTrip(@PathVariable("id") int id) {
+        chatService.deleteTripChat(id);
         tripService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

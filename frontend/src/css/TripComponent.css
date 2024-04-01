@@ -97,6 +97,10 @@ a {all: unset;}
     .featurette-divider.media-q {
         display: none;
     }
+
+    .grid-tripc-capacity, .grid-tripc-car {
+        padding-left: 15px;
+    }
 }
 
 @media (max-width: 1200px) {
