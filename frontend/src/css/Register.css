@@ -10,7 +10,7 @@ body.register-page {
 }
 
 .bottom-padding {
-    padding-bottom: 10px;
+    padding-bottom: 100px;
 }
 
 @media (max-width: 600px) {

@@ -27,7 +27,7 @@ export default function Header() {
                 { auth.isLogged ?
                 <>
                 <p type="button" onClick={() => {navigate("/profile")}} className="header-user-login">{auth.login}</p>
-                <button onClick={() => {navigate("chats")}} className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Chats</button>
+                <button onClick={() => {navigate("chats")}} className="btn btn-outline-light btn-floating m-1 btn-primary btn btn-primary">Chaty</button>
                 </>
                 : <></>}
                 <DropdownMenu />
